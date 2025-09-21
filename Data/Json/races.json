@@ -1,0 +1,224 @@
+{
+  "Human": {
+    "Name": "Human",
+    "Description": "Versatile beings who excel through professions rather than evolution. Humans are adaptable and can specialize in various fields.",
+    "CanEvolve": false,
+    "BaseStats": {
+      "Strength": 10,
+      "Intelligence": 10,
+      "Dexterity": 10,
+      "Constitution": 10,
+      "Wisdom": 10,
+      "Charisma": 10
+    },
+    "StartingSkills": ["BasicSwordplay", "BasicMagic"],
+    "SpawnLocations": ["HumanVillage", "TradingPost"],
+    "EvolutionPaths": {},
+    "ProfessionPaths": {
+      "Warrior": {
+        "Name": "Warrior",
+        "Description": "Masters of physical combat and weapon techniques.",
+        "Requirements": {
+          "level": 5,
+          "strength": 12
+        },
+        "NextProfessions": ["Knight", "Berserker"],
+        "StatBonuses": {
+          "Strength": 2,
+          "Constitution": 2
+        },
+        "UnlockedSkills": ["PowerStrike", "DefensiveStance"],
+        "IsFinalProfession": false
+      },
+      "Mage": {
+        "Name": "Mage",
+        "Description": "Wielders of arcane magic and mystical forces.",
+        "Requirements": {
+          "level": 5,
+          "intelligence": 12
+        },
+        "NextProfessions": ["Wizard", "Sorcerer"],
+        "StatBonuses": {
+          "Intelligence": 3,
+          "Wisdom": 1
+        },
+        "UnlockedSkills": ["Fireball", "ManaShield"],
+        "IsFinalProfession": false
+      },
+      "Knight": {
+        "Name": "Knight",
+        "Description": "Holy warriors dedicated to justice and protection.",
+        "Requirements": {
+          "current_profession": "Warrior",
+          "profession_level": 10,
+          "honor": 25
+        },
+        "NextProfessions": ["Paladin"],
+        "StatBonuses": {
+          "Strength": 3,
+          "Constitution": 3,
+          "Charisma": 2
+        },
+        "UnlockedSkills": ["HolyStrike", "Blessing"],
+        "IsFinalProfession": false
+      },
+      "Paladin": {
+        "Name": "Paladin",
+        "Description": "Champions of light who combine martial prowess with divine magic.",
+        "Requirements": {
+          "current_profession": "Knight",
+          "profession_level": 15,
+          "honor": 50
+        },
+        "NextProfessions": [],
+        "StatBonuses": {
+          "Strength": 4,
+          "Constitution": 4,
+          "Wisdom": 3,
+          "Charisma": 3
+        },
+        "UnlockedSkills": ["DivineWrath", "Consecration", "LayOnHands"],
+        "IsFinalProfession": true
+      }
+    }
+  },
+  "Goblin": {
+    "Name": "Goblin",
+    "Description": "Small but cunning creatures that evolve into powerful forms. Goblins are naturally sneaky and intelligent.",
+    "CanEvolve": true,
+    "BaseStats": {
+      "Strength": 8,
+      "Intelligence": 12,
+      "Dexterity": 14,
+      "Constitution": 8,
+      "Wisdom": 10,
+      "Charisma": 6
+    },
+    "StartingSkills": ["Stealth", "BasicCrafting"],
+    "SpawnLocations": ["GoblinCave", "ForestClearing"],
+    "EvolutionPaths": {
+      "HobGoblin": {
+        "Name": "Hobgoblin",
+        "Description": "Larger and stronger goblins with natural leadership abilities.",
+        "Requirements": {
+          "level": 10,
+          "strength": 12
+        },
+        "NextEvolutions": ["GoblinChief", "GoblinWarrior"],
+        "StatBonuses": {
+          "Strength": 5,
+          "Constitution": 3,
+          "Charisma": 2
+        },
+        "UnlockedSkills": ["Intimidate", "Rally"],
+        "IsFinalEvolution": false
+      },
+      "GoblinShaman": {
+        "Name": "Goblin Shaman",
+        "Description": "Mystical goblins who commune with dark spirits.",
+        "Requirements": {
+          "level": 8,
+          "intelligence": 15,
+          "wisdom": 12
+        },
+        "NextEvolutions": ["GoblinWitchDoctor", "GoblinElementalist"],
+        "StatBonuses": {
+          "Intelligence": 4,
+          "Wisdom": 4,
+          "Charisma": 2
+        },
+        "UnlockedSkills": ["SpiritBolt", "Hex"],
+        "IsFinalEvolution": false
+      },
+      "GoblinChief": {
+        "Name": "Goblin Chief",
+        "Description": "Supreme leader of goblin tribes, commanding respect and fear.",
+        "Requirements": {
+          "level": 20,
+          "charisma": 18
+        },
+        "NextEvolutions": [],
+        "StatBonuses": {
+          "Strength": 6,
+          "Constitution": 4,
+          "Charisma": 8,
+          "Intelligence": 3
+        },
+        "UnlockedSkills": ["WarCry", "CommandTroops", "Dominate"],
+        "IsFinalEvolution": true
+      }
+    },
+    "ProfessionPaths": {}
+  },
+  "Spider": {
+    "Name": "Spider",
+    "Description": "Mysterious arachnid beings with natural hunting instincts and web-weaving abilities.",
+    "CanEvolve": true,
+    "BaseStats": {
+      "Strength": 9,
+      "Intelligence": 11,
+      "Dexterity": 16,
+      "Constitution": 10,
+      "Wisdom": 13,
+      "Charisma": 4
+    },
+    "StartingSkills": ["WebWeaving", "Stealth", "Poisonous"],
+    "SpawnLocations": ["SpiderNest", "DarkForest"],
+    "EvolutionPaths": {
+      "GiantSpider": {
+        "Name": "Giant Spider",
+        "Description": "Enormous spider with deadly poison and incredible strength.",
+        "Requirements": {
+          "level": 12,
+          "strength": 15,
+          "constitution": 12
+        },
+        "NextEvolutions": ["SpiderQueen", "VenomousSpider"],
+        "StatBonuses": {
+          "Strength": 6,
+          "Constitution": 4,
+          "Dexterity": 2
+        },
+        "UnlockedSkills": ["CrushingBite", "WebTrap"],
+        "IsFinalEvolution": false
+      },
+      "ShadowSpider": {
+        "Name": "Shadow Spider",
+        "Description": "Ethereal spider that moves through shadows and darkness.",
+        "Requirements": {
+          "level": 10,
+          "dexterity": 18,
+          "wisdom": 15
+        },
+        "NextEvolutions": ["PhaseSpider", "DarkWeaver"],
+        "StatBonuses": {
+          "Dexterity": 5,
+          "Wisdom": 4,
+          "Intelligence": 3
+        },
+        "UnlockedSkills": ["ShadowStep", "DarkWeb"],
+        "IsFinalEvolution": false
+      },
+      "SpiderQueen": {
+        "Name": "Spider Queen",
+        "Description": "Matriarch of all spiders, capable of commanding entire colonies.",
+        "Requirements": {
+          "level": 25,
+          "charisma": 15
+        },
+        "NextEvolutions": [],
+        "StatBonuses": {
+          "Strength": 8,
+          "Constitution": 6,
+          "Dexterity": 4,
+          "Intelligence": 5,
+          "Wisdom": 5,
+          "Charisma": 10
+        },
+        "UnlockedSkills": ["SummonSpiders", "QueensPheromones", "WebDomain"],
+        "IsFinalEvolution": true
+      }
+    },
+    "ProfessionPaths": {}
+  }
+}

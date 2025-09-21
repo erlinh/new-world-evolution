@@ -1,0 +1,245 @@
+{
+  "BasicSwordplay": {
+    "Name": "Basic Swordplay",
+    "Description": "Fundamental sword combat techniques for beginners.",
+    "Type": "Active",
+    "Category": "Combat",
+    "MaxLevel": 5,
+    "Requirements": {},
+    "Prerequisites": [],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Simple sword strikes",
+        "ManaCost": 0,
+        "Cooldown": 2,
+        "EffectValue": 10.0,
+        "StatBonuses": {}
+      },
+      "3": {
+        "Level": 3,
+        "Description": "Improved sword techniques",
+        "ManaCost": 0,
+        "Cooldown": 2,
+        "EffectValue": 15.0,
+        "StatBonuses": {}
+      },
+      "5": {
+        "Level": 5,
+        "Description": "Advanced sword mastery",
+        "ManaCost": 0,
+        "Cooldown": 1,
+        "EffectValue": 20.0,
+        "StatBonuses": {}
+      }
+    },
+    "IsUnique": false,
+    "RestrictedToRaces": [],
+    "RestrictedToProfessions": []
+  },
+  "BasicMagic": {
+    "Name": "Basic Magic",
+    "Description": "Elementary magical abilities and spell casting.",
+    "Type": "Active",
+    "Category": "Magic",
+    "MaxLevel": 5,
+    "Requirements": {
+      "intelligence": 8
+    },
+    "Prerequisites": [],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Simple magic missile",
+        "ManaCost": 10,
+        "Cooldown": 3,
+        "EffectValue": 12.0,
+        "StatBonuses": {}
+      },
+      "3": {
+        "Level": 3,
+        "Description": "Improved magic power",
+        "ManaCost": 8,
+        "Cooldown": 3,
+        "EffectValue": 18.0,
+        "StatBonuses": {}
+      },
+      "5": {
+        "Level": 5,
+        "Description": "Advanced magical manipulation",
+        "ManaCost": 6,
+        "Cooldown": 2,
+        "EffectValue": 25.0,
+        "StatBonuses": {}
+      }
+    },
+    "IsUnique": false,
+    "RestrictedToRaces": [],
+    "RestrictedToProfessions": []
+  },
+  "Stealth": {
+    "Name": "Stealth",
+    "Description": "The ability to move unseen and avoid detection.",
+    "Type": "Passive",
+    "Category": "Stealth",
+    "MaxLevel": 10,
+    "Requirements": {
+      "dexterity": 10
+    },
+    "Prerequisites": [],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Basic stealth techniques",
+        "ManaCost": 0,
+        "Cooldown": 0,
+        "EffectValue": 10.0,
+        "StatBonuses": {
+          "dexterity": 1
+        }
+      },
+      "5": {
+        "Level": 5,
+        "Description": "Advanced stealth mastery",
+        "ManaCost": 0,
+        "Cooldown": 0,
+        "EffectValue": 25.0,
+        "StatBonuses": {
+          "dexterity": 3
+        }
+      },
+      "10": {
+        "Level": 10,
+        "Description": "Master of shadows",
+        "ManaCost": 0,
+        "Cooldown": 0,
+        "EffectValue": 50.0,
+        "StatBonuses": {
+          "dexterity": 5,
+          "wisdom": 2
+        }
+      }
+    },
+    "IsUnique": false,
+    "RestrictedToRaces": [],
+    "RestrictedToProfessions": []
+  },
+  "Fireball": {
+    "Name": "Fireball",
+    "Description": "Launch a sphere of fire at enemies.",
+    "Type": "Active",
+    "Category": "Magic",
+    "MaxLevel": 8,
+    "Requirements": {
+      "intelligence": 12
+    },
+    "Prerequisites": ["BasicMagic"],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Small fireball",
+        "ManaCost": 15,
+        "Cooldown": 4,
+        "EffectValue": 20.0,
+        "StatBonuses": {}
+      },
+      "4": {
+        "Level": 4,
+        "Description": "Medium fireball with area damage",
+        "ManaCost": 20,
+        "Cooldown": 4,
+        "EffectValue": 35.0,
+        "StatBonuses": {}
+      },
+      "8": {
+        "Level": 8,
+        "Description": "Devastating fireball explosion",
+        "ManaCost": 30,
+        "Cooldown": 3,
+        "EffectValue": 60.0,
+        "StatBonuses": {}
+      }
+    },
+    "IsUnique": false,
+    "RestrictedToRaces": [],
+    "RestrictedToProfessions": ["Mage", "Wizard", "Sorcerer"]
+  },
+  "WebWeaving": {
+    "Name": "Web Weaving",
+    "Description": "Create webs to trap enemies or for utility purposes.",
+    "Type": "Active",
+    "Category": "Unique",
+    "MaxLevel": 6,
+    "Requirements": {},
+    "Prerequisites": [],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Basic web creation",
+        "ManaCost": 8,
+        "Cooldown": 5,
+        "EffectValue": 15.0,
+        "StatBonuses": {}
+      },
+      "3": {
+        "Level": 3,
+        "Description": "Stronger and larger webs",
+        "ManaCost": 10,
+        "Cooldown": 4,
+        "EffectValue": 25.0,
+        "StatBonuses": {}
+      },
+      "6": {
+        "Level": 6,
+        "Description": "Master web architect",
+        "ManaCost": 12,
+        "Cooldown": 3,
+        "EffectValue": 40.0,
+        "StatBonuses": {}
+      }
+    },
+    "IsUnique": true,
+    "RestrictedToRaces": ["Spider"],
+    "RestrictedToProfessions": []
+  },
+  "PowerStrike": {
+    "Name": "Power Strike",
+    "Description": "A powerful melee attack that deals increased damage.",
+    "Type": "Active",
+    "Category": "Combat",
+    "MaxLevel": 6,
+    "Requirements": {
+      "strength": 12
+    },
+    "Prerequisites": ["BasicSwordplay"],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Concentrated strike",
+        "ManaCost": 0,
+        "Cooldown": 6,
+        "EffectValue": 25.0,
+        "StatBonuses": {}
+      },
+      "3": {
+        "Level": 3,
+        "Description": "Enhanced power strike",
+        "ManaCost": 0,
+        "Cooldown": 5,
+        "EffectValue": 40.0,
+        "StatBonuses": {}
+      },
+      "6": {
+        "Level": 6,
+        "Description": "Devastating blow",
+        "ManaCost": 0,
+        "Cooldown": 4,
+        "EffectValue": 65.0,
+        "StatBonuses": {}
+      }
+    },
+    "IsUnique": false,
+    "RestrictedToRaces": [],
+    "RestrictedToProfessions": ["Warrior", "Knight", "Paladin", "Berserker"]
+  }
+}

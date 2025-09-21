@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2n6vl3p7hfnj"]
+
+[ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="1_8n2qp"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStats.cs" id="2_vr8km"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillManager.cs" id="3_k4q8m"]
+[ext_resource type="Script" path="res://Scripts/Goals/GoalManager.cs" id="4_g7h2s"]
+[ext_resource type="Script" path="res://Scripts/Player/Evolution/EvolutionManager.cs" id="5_m8n1p"]
+[ext_resource type="Script" path="res://Scripts/Player/Profession/ProfessionManager.cs" id="6_q9r4t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(16, 24)
+
+[node name="PlayerBase" type="CharacterBody2D"]
+script = ExtResource("1_8n2qp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_1")
+
+[node name="PlayerStats" type="Node" parent="."]
+script = ExtResource("2_vr8km")
+
+[node name="SkillManager" type="Node" parent="."]
+script = ExtResource("3_k4q8m")
+
+[node name="GoalManager" type="Node" parent="."]
+script = ExtResource("4_g7h2s")
+
+[node name="EvolutionManager" type="Node" parent="."]
+script = ExtResource("5_m8n1p")
+
+[node name="ProfessionManager" type="Node" parent="."]
+script = ExtResource("6_q9r4t")

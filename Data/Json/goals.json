@@ -1,0 +1,246 @@
+{
+  "DemonLord": {
+    "Type": "DemonLord",
+    "Name": "Demon Lord",
+    "Description": "Rule over demons and spread darkness across the land. Embrace corruption and become a master of evil.",
+    "UnlockConditions": [
+      {
+        "Type": "Stat",
+        "Target": "corruption",
+        "Value": 25,
+        "Operator": ">="
+      },
+      {
+        "Type": "Skill",
+        "Target": "DarkMagic",
+        "Value": 1,
+        "Operator": ">="
+      }
+    ],
+    "Rewards": [
+      {
+        "Type": "skill",
+        "Target": "DemonicAura",
+        "Value": 1
+      },
+      {
+        "Type": "stat",
+        "Target": "corruption",
+        "Value": 25
+      },
+      {
+        "Type": "title",
+        "Target": "Dark Lord",
+        "Value": 1
+      }
+    ],
+    "IsUnlocked": false,
+    "IsCompleted": false,
+    "Priority": 1
+  },
+  "Hero": {
+    "Type": "Hero",
+    "Name": "Hero",
+    "Description": "Become a legendary hero who saves the innocent and fights against evil.",
+    "UnlockConditions": [
+      {
+        "Type": "Stat",
+        "Target": "honor",
+        "Value": 30,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "level",
+        "Value": 15,
+        "Operator": ">="
+      }
+    ],
+    "Rewards": [
+      {
+        "Type": "skill",
+        "Target": "HeroicPresence",
+        "Value": 1
+      },
+      {
+        "Type": "stat",
+        "Target": "honor",
+        "Value": 20
+      },
+      {
+        "Type": "stat",
+        "Target": "charisma",
+        "Value": 5
+      },
+      {
+        "Type": "title",
+        "Target": "Champion",
+        "Value": 1
+      }
+    ],
+    "IsUnlocked": false,
+    "IsCompleted": false,
+    "Priority": 1
+  },
+  "King": {
+    "Type": "King",
+    "Name": "King",
+    "Description": "Rule a kingdom through political influence and leadership.",
+    "UnlockConditions": [
+      {
+        "Type": "Stat",
+        "Target": "charisma",
+        "Value": 20,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "level",
+        "Value": 20,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "fame",
+        "Value": 50,
+        "Operator": ">="
+      }
+    ],
+    "Rewards": [
+      {
+        "Type": "skill",
+        "Target": "RoyalCommand",
+        "Value": 1
+      },
+      {
+        "Type": "stat",
+        "Target": "charisma",
+        "Value": 10
+      },
+      {
+        "Type": "stat",
+        "Target": "fame",
+        "Value": 50
+      },
+      {
+        "Type": "title",
+        "Target": "Monarch",
+        "Value": 1
+      }
+    ],
+    "IsUnlocked": false,
+    "IsCompleted": false,
+    "Priority": 2
+  },
+  "God": {
+    "Type": "God",
+    "Name": "Ascension to Godhood",
+    "Description": "Transcend mortality and become a deity with ultimate power.",
+    "UnlockConditions": [
+      {
+        "Type": "Stat",
+        "Target": "level",
+        "Value": 50,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "intelligence",
+        "Value": 30,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "wisdom",
+        "Value": 30,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "fame",
+        "Value": 100,
+        "Operator": ">="
+      }
+    ],
+    "Rewards": [
+      {
+        "Type": "skill",
+        "Target": "DivineAscension",
+        "Value": 1
+      },
+      {
+        "Type": "stat",
+        "Target": "strength",
+        "Value": 20
+      },
+      {
+        "Type": "stat",
+        "Target": "intelligence",
+        "Value": 20
+      },
+      {
+        "Type": "stat",
+        "Target": "wisdom",
+        "Value": 20
+      },
+      {
+        "Type": "title",
+        "Target": "Deity",
+        "Value": 1
+      }
+    ],
+    "IsUnlocked": false,
+    "IsCompleted": false,
+    "Priority": 3
+  },
+  "MasterCraftsman": {
+    "Type": "MasterCraftsman",
+    "Name": "Master Craftsman",
+    "Description": "Become a legendary artisan capable of creating wondrous items.",
+    "UnlockConditions": [
+      {
+        "Type": "Skill",
+        "Target": "BasicCrafting",
+        "Value": 10,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "dexterity",
+        "Value": 25,
+        "Operator": ">="
+      },
+      {
+        "Type": "Stat",
+        "Target": "intelligence",
+        "Value": 20,
+        "Operator": ">="
+      }
+    ],
+    "Rewards": [
+      {
+        "Type": "skill",
+        "Target": "LegendaryCrafting",
+        "Value": 1
+      },
+      {
+        "Type": "stat",
+        "Target": "dexterity",
+        "Value": 5
+      },
+      {
+        "Type": "stat",
+        "Target": "intelligence",
+        "Value": 5
+      },
+      {
+        "Type": "title",
+        "Target": "Grandmaster Artisan",
+        "Value": 1
+      }
+    ],
+    "IsUnlocked": false,
+    "IsCompleted": false,
+    "Priority": 2
+  }
+}
