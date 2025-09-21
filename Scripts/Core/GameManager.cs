@@ -8,6 +8,8 @@ namespace NewWorldEvolution.Core
     {
         public static GameManager Instance { get; private set; }
         public static string SelectedRace { get; set; } = "Human";
+        public static string SelectedGender { get; set; } = "Male";
+        public static string SelectedName { get; set; } = "";
 
         [Export] public string RaceDataPath = "res://Data/Json/races.json";
         [Export] public string SkillDataPath = "res://Data/Json/skills.json";

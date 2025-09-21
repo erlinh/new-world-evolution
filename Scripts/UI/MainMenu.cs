@@ -115,13 +115,10 @@ namespace NewWorldEvolution.UI
 
         private void OnStartGamePressed()
         {
-            GD.Print($"Starting new game as {_selectedRace}");
+            GD.Print("Going to character creation...");
             
-            // Store selected race globally for the next scene
-            GameManager.SelectedRace = _selectedRace;
-            
-            // Transition to game world
-            GetTree().ChangeSceneToFile("res://Scenes/Main/GameWorld.tscn");
+            // Transition to character creation
+            GetTree().ChangeSceneToFile("res://Scenes/Main/CharacterCreation.tscn");
         }
 
         private void OnLoadGamePressed()

@@ -17,7 +17,6 @@ namespace NewWorldEvolution.Player
         public string CurrentProfession { get; set; }
         public string Gender { get; private set; }
 
-        private AnimatedSprite2D _animatedSprite;
         private Skills.SkillManager _skillManager;
         private Goals.GoalManager _goalManager;
 
@@ -26,7 +25,6 @@ namespace NewWorldEvolution.Player
         public override void _Ready()
         {
             Stats = new PlayerStats();
-            _animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
             _skillManager = GetNode<Skills.SkillManager>("SkillManager");
             _goalManager = GetNode<Goals.GoalManager>("GoalManager");
 
@@ -40,10 +38,17 @@ namespace NewWorldEvolution.Player
             
             if (!string.IsNullOrEmpty(CurrentRace))
             {
-                // Generate random gender and name
-                var random = new System.Random();
-                Gender = random.Next(2) == 0 ? "Male" : "Female";
-                PlayerName = NameGenerator.GeneratePlayerName(CurrentRace, Gender);
+                // Use selected name and gender, or generate if not provided
+                Gender = !string.IsNullOrEmpty(GameManager.SelectedGender) ? GameManager.SelectedGender : "Male";
+                
+                if (!string.IsNullOrEmpty(GameManager.SelectedName))
+                {
+                    PlayerName = GameManager.SelectedName;
+                }
+                else
+                {
+                    PlayerName = NameGenerator.GeneratePlayerName(CurrentRace, Gender);
+                }
                 
                 var raceData = GameManager.Instance.GetRaceData(CurrentRace);
                 if (raceData != null)
@@ -51,6 +56,9 @@ namespace NewWorldEvolution.Player
                     Stats.InitializeFromRace(raceData);
                     _skillManager.InitializeStartingSkills(raceData.StartingSkills);
                 }
+                
+                // Update visual representation based on race
+                UpdateVisualRepresentation();
                 
                 GD.Print($"Player created: {PlayerName} ({Gender} {CurrentRace})");
             }
@@ -73,27 +81,47 @@ namespace NewWorldEvolution.Player
             if (direction != Vector2.Zero)
             {
                 velocity.X = direction.X * Speed;
-                UpdateAnimation("walk");
+                // Moving - could add movement effects here later
             }
             else
             {
                 velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-                UpdateAnimation("idle");
+                // Idle - could add idle effects here later
             }
 
             Velocity = velocity;
             MoveAndSlide();
         }
 
-        private void UpdateAnimation(string animationName)
+        private void UpdateVisualRepresentation()
         {
-            if (_animatedSprite != null && _animatedSprite.SpriteFrames != null)
+            var visualRep = GetNode<Node2D>("VisualRepresentation");
+            if (visualRep != null)
             {
-                if (_animatedSprite.SpriteFrames.HasAnimation(animationName))
+                var body = visualRep.GetNode<ColorRect>("Body");
+                var head = visualRep.GetNode<ColorRect>("Head");
+                
+                if (body != null && head != null)
                 {
-                    _animatedSprite.Play(animationName);
+                    // Set colors based on race
+                    var raceColors = GetRaceColors(CurrentRace);
+                    body.Color = raceColors.Body;
+                    head.Color = raceColors.Head;
                 }
             }
+        }
+        
+        private (Color Body, Color Head) GetRaceColors(string race)
+        {
+            return race switch
+            {
+                "Human" => (new Color(0.7f, 0.7f, 0.9f), new Color(0.9f, 0.8f, 0.7f)),
+                "Goblin" => (new Color(0.4f, 0.7f, 0.3f), new Color(0.5f, 0.8f, 0.4f)),
+                "Spider" => (new Color(0.2f, 0.1f, 0.1f), new Color(0.3f, 0.2f, 0.2f)),
+                "Demon" => (new Color(0.8f, 0.2f, 0.2f), new Color(0.9f, 0.3f, 0.3f)),
+                "Vampire" => (new Color(0.3f, 0.3f, 0.3f), new Color(0.9f, 0.9f, 0.9f)),
+                _ => (new Color(0.7f, 0.7f, 0.9f), new Color(0.9f, 0.8f, 0.7f))
+            };
         }
 
         public void LevelUp()

@@ -1,0 +1,102 @@
+{
+  "HumanVillage": {
+    "Name": "Human Village",
+    "Description": "A peaceful village where humans live and trade.",
+    "Position": {"x": 0, "y": 0},
+    "AllowedRaces": ["Human"],
+    "ScenePath": "res://Scenes/Environments/Spawns/HumanVillage.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "TradingPost": {
+    "Name": "Trading Post",
+    "Description": "A bustling trading post where merchants gather.",
+    "Position": {"x": 200, "y": -50},
+    "AllowedRaces": ["Human"],
+    "ScenePath": "res://Scenes/Environments/Spawns/TradingPost.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "GoblinCave": {
+    "Name": "Goblin Cave",
+    "Description": "A dark cave system where goblins make their home.",
+    "Position": {"x": -150, "y": 100},
+    "AllowedRaces": ["Goblin"],
+    "ScenePath": "res://Scenes/Environments/Spawns/GoblinCave.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "ForestClearing": {
+    "Name": "Forest Clearing",
+    "Description": "A hidden clearing in the forest where goblins gather.",
+    "Position": {"x": -80, "y": -120},
+    "AllowedRaces": ["Goblin"],
+    "ScenePath": "res://Scenes/Environments/Spawns/ForestClearing.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "SpiderNest": {
+    "Name": "Spider Nest",
+    "Description": "Ancient web-covered ruins where spiders dwell.",
+    "Position": {"x": 150, "y": 150},
+    "AllowedRaces": ["Spider"],
+    "ScenePath": "res://Scenes/Environments/Spawns/SpiderNest.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "DarkForest": {
+    "Name": "Dark Forest",
+    "Description": "Shadowy forest depths where spiders hunt.",
+    "Position": {"x": -200, "y": 0},
+    "AllowedRaces": ["Spider"],
+    "ScenePath": "res://Scenes/Environments/Spawns/DarkForest.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "DemonRift": {
+    "Name": "Demon Rift",
+    "Description": "A fiery dimensional rift where demons emerge.",
+    "Position": {"x": 100, "y": -200},
+    "AllowedRaces": ["Demon"],
+    "ScenePath": "res://Scenes/Environments/Spawns/DemonRift.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "CorruptedLands": {
+    "Name": "Corrupted Lands",
+    "Description": "Twisted corrupted wasteland where demons roam.",
+    "Position": {"x": -100, "y": 200},
+    "AllowedRaces": ["Demon"],
+    "ScenePath": "res://Scenes/Environments/Spawns/CorruptedLands.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "VampireCastle": {
+    "Name": "Vampire Castle",
+    "Description": "A gothic ancient castle where vampires reside.",
+    "Position": {"x": 250, "y": 50},
+    "AllowedRaces": ["Vampire"],
+    "ScenePath": "res://Scenes/Environments/Spawns/VampireCastle.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  },
+  "Crypts": {
+    "Name": "Crypts",
+    "Description": "Underground burial chambers where vampires sleep.",
+    "Position": {"x": -250, "y": -100},
+    "AllowedRaces": ["Vampire"],
+    "ScenePath": "res://Scenes/Environments/Spawns/Crypts.tscn",
+    "SpawnProperties": {},
+    "NearbyNPCs": [],
+    "AvailableQuests": []
+  }
+}
