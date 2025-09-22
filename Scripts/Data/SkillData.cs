@@ -18,6 +18,7 @@ namespace NewWorldEvolution.Data
         Social,
         Stealth,
         Knowledge,
+        Crafting,
         Unique
     }
 

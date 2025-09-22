@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://8cnavil3uiel"]
+
+[ext_resource type="Script" path="res://Scripts/UI/SkillBar/SkillBarManager.cs" id="1_skillbar"]
+[ext_resource type="PackedScene" uid="uid://bk7x2m9y8n3z4" path="res://Scenes/UI/SkillBarSlot.tscn" id="2_slot"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.1, 0.1, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.15, 0.15, 0.15, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="SkillBar" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -70.0
+offset_right = 260.0
+offset_bottom = -10.0
+script = ExtResource("1_skillbar")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2")
+
+[node name="MainContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+theme_override_constants/separation = 4
+
+[node name="Slot1" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot2" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot3" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot4" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot5" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot6" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot7" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot8" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot9" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot10" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot11" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2
+
+[node name="Slot12" parent="MainContainer" instance=ExtResource("2_slot")]
+layout_mode = 2

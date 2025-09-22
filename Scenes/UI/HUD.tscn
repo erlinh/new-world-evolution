@@ -1,73 +1,367 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2x3y4z5a6b7c8d9"]
+[gd_scene load_steps=8 format=3 uid="uid://detn7mqnwpq7e"]
 
-[ext_resource type="Script" path="res://Scripts/UI/HUDManager.cs" id="1_abc123"]
+[ext_resource type="Script" uid="uid://37nu753b478" path="res://Scripts/UI/HUDManager.cs" id="1_abc123"]
+[ext_resource type="PackedScene" uid="uid://8cnavil3uiel" path="res://Scenes/UI/SkillBar.tscn" id="2_skillbar"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.1, 0.15, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.4, 0.6, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4"]
+bg_color = Color(0.8, 0.2, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5"]
+bg_color = Color(0.2, 0.4, 0.8, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.15, 0.1, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.4, 0.3, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3"]
+bg_color = Color(0.1, 0.15, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.6, 0.3, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="HUD" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_abc123")
 
-[node name="StatsPanel" type="Panel" parent="."]
-layout_mode = 0
-anchor_right = 0.3
-anchor_bottom = 0.4
-offset_right = 0.0
-offset_bottom = 0.0
-
-[node name="StatsLabel" type="Label" parent="StatsPanel"]
+[node name="TopLeft" type="Control" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
-text = "Player Stats
-Name: Loading...
-Race: Loading...
-Level: 1"
-vertical_alignment = 1
-
-[node name="WorldInfoPanel" type="Panel" parent="."]
-layout_mode = 0
-anchor_left = 0.7
-anchor_right = 1.0
-anchor_bottom = 0.4
-
-[node name="WorldInfoLabel" type="Label" parent="WorldInfoPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = -10.0
-text = "World Info
-Day: 1, Year: 1
-Population: Loading..."
-vertical_alignment = 1
-
-[node name="EventLog" type="Panel" parent="."]
-layout_mode = 0
-anchor_top = 0.6
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="EventScrollContainer" type="ScrollContainer" parent="EventLog"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.4
+anchor_bottom = 0.3
 offset_left = 10.0
 offset_top = 10.0
 offset_right = -10.0
 offset_bottom = -10.0
 
-[node name="EventList" type="VBoxContainer" parent="EventLog/EventScrollContainer"]
+[node name="PlayerStatsPanel" type="Panel" parent="TopLeft"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="StatsContainer" type="VBoxContainer" parent="TopLeft/PlayerStatsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "◊ Character Stats ◊"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+
+[node name="PlayerInfo" type="VBoxContainer" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/PlayerInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Name: Loading..."
+
+[node name="RaceLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/PlayerInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 1, 0.8, 1)
+text = "Race: Loading..."
+
+[node name="GenderLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/PlayerInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 1, 1)
+text = "Gender: Loading..."
+
+[node name="LevelLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/PlayerInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 13
+text = "Level: 1"
+
+[node name="HSeparator2" type="HSeparator" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+
+[node name="VitalStats" type="VBoxContainer" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+
+[node name="HealthContainer" type="HBoxContainer" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats/HealthContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 0.6, 0.6, 1)
+text = "Health:"
+
+[node name="HealthBar" type="ProgressBar" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats/HealthContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_4")
+value = 100.0
+
+[node name="HealthText" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats/HealthContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "100/100"
+
+[node name="ManaContainer" type="HBoxContainer" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats"]
+layout_mode = 2
+
+[node name="ManaLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats/ManaContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.6, 0.6, 1, 1)
+text = "Mana:"
+
+[node name="ManaBar" type="ProgressBar" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats/ManaContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_5")
+max_value = 50.0
+value = 50.0
+
+[node name="ManaText" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer/VitalStats/ManaContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "50/50"
+
+[node name="HSeparator3" type="HSeparator" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+
+[node name="ProgressionLabel" type="Label" parent="TopLeft/PlayerStatsPanel/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 1, 1)
+text = "Progression: Evolution"
+
+[node name="TopRight" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.25
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="WorldInfoPanel" type="Panel" parent="TopRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2")
+
+[node name="WorldContainer" type="VBoxContainer" parent="TopRight/WorldInfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="TopRight/WorldInfoPanel/WorldContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "◊ World Status ◊"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="TopRight/WorldInfoPanel/WorldContainer"]
+layout_mode = 2
+
+[node name="TimeLabel" type="Label" parent="TopRight/WorldInfoPanel/WorldContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "Day: 1, Year: 1"
+
+[node name="PopulationLabel" type="Label" parent="TopRight/WorldInfoPanel/WorldContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 1, 0.8, 1)
+text = "Population: Loading..."
+
+[node name="LocationLabel" type="Label" parent="TopRight/WorldInfoPanel/WorldContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+text = "Location: Unknown"
+
+[node name="BottomRight" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.6
+anchor_top = 0.3
+anchor_right = 1.0
+anchor_bottom = 0.85
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="EventLogPanel" type="Panel" parent="BottomRight"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3")
+
+[node name="EventContainer" type="VBoxContainer" parent="BottomRight/EventLogPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="BottomRight/EventLogPanel/EventContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 16
+text = "◊ Event Log ◊"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="BottomRight/EventLogPanel/EventContainer"]
+layout_mode = 2
+
+[node name="EventScrollContainer" type="ScrollContainer" parent="BottomRight/EventLogPanel/EventContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="EventList" type="VBoxContainer" parent="BottomRight/EventLogPanel/EventContainer/EventScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="MinimapArea" type="Control" parent="."]
+layout_mode = 1
+anchor_top = 0.5
+anchor_right = 0.25
+anchor_bottom = 0.963
+offset_left = 10.0
+offset_top = 11.0
+offset_right = -10.0
+offset_bottom = -9.0
+grow_vertical = 0
+
+[node name="MinimapPanel" type="Panel" parent="MinimapArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="MinimapContainer" type="VBoxContainer" parent="MinimapArea/MinimapPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="MinimapArea/MinimapPanel/MinimapContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "◊ Mini Map ◊"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MinimapArea/MinimapPanel/MinimapContainer"]
+layout_mode = 2
+
+[node name="MinimapDisplay" type="ColorRect" parent="MinimapArea/MinimapPanel/MinimapContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(0.2, 0.3, 0.2, 1)
+
+[node name="PlayerDot" type="ColorRect" parent="MinimapArea/MinimapPanel/MinimapContainer/MinimapDisplay"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="SkillBar" parent="." instance=ExtResource("2_skillbar")]
+layout_mode = 1
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="UIAnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="RefreshTimer" type="Timer" parent="."]
+autostart = true
