@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5l1i2m3e4s5l6i7"]
+
+[ext_resource type="PackedScene" uid="uid://b8m2o3n4s5t6e7r8" path="res://Scenes/Entities/BaseMonster.tscn" id="1_base"]
+[ext_resource type="Script" path="res://Scripts/Entities/Monsters/Slime.cs" id="2_slime"]
+
+[node name="Slime" instance=ExtResource("1_base")]
+script = ExtResource("2_slime")
+MonsterName = "Green Slime"
+Level = 1
+Behavior = 1
+MovementSpeed = 30.0
+
+[node name="Sprite2D" parent="." index="0"]
+modulate = Color(0.3, 0.8, 0.3, 1)
+scale = Vector2(0.8, 0.8)
+
+[node name="CollisionShape2D" parent="." index="1"]
+scale = Vector2(0.8, 0.8)
+
+[node name="DetectionShape" parent="DetectionArea" index="0"]
+scale = Vector2(0.8, 0.8)

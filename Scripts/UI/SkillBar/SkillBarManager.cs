@@ -199,29 +199,39 @@ namespace NewWorldEvolution.UI.SkillBar
 
         private void PopulateWithPlayerSkills()
         {
-            // For testing, add some basic skills that should exist
+            // Add combat abilities to the first 4 slots
+            var abilities = new List<(string name, string display, string desc, string key, float cooldown)>
+            {
+                ("BasicAttack", "Basic Attack", "Standard melee attack", "Q", 1.0f),
+                ("PowerStrike", "Power Strike", "Powerful attack with double damage", "W", 3.0f),
+                ("QuickSlash", "Quick Slash", "Fast attack with reduced damage", "E", 2.0f),
+                ("SpinAttack", "Spin Attack", "Area attack hitting nearby enemies", "R", 5.0f)
+            };
+
+            int slotIndex = 0;
+            foreach (var (name, display, desc, key, cooldown) in abilities)
+            {
+                var abilityItem = new SkillBarAbility(name, display, desc, key, cooldown);
+                SetSlotItem(slotIndex, abilityItem);
+                GD.Print($"Added ability to slot {slotIndex}: {display} [{key}]");
+                slotIndex++;
+            }
+
+            // Add some basic skills to remaining slots
             var basicSkills = new List<string> { "BasicSwordplay", "BasicMagic", "BasicCrafting" };
             
-            int slotIndex = 0;
-            foreach (var skillName in basicSkills.Take(DefaultSlotCount))
+            foreach (var skillName in basicSkills)
             {
+                if (slotIndex >= DefaultSlotCount) break;
+                
                 var skillData = GameManager.Instance?.GetSkillData(skillName);
                 if (skillData != null)
                 {
                     var skillBarItem = new SkillBarSkill(skillData);
                     SetSlotItem(slotIndex, skillBarItem);
+                    GD.Print($"Added skill to slot {slotIndex}: {skillName}");
                     slotIndex++;
-                    GD.Print($"Added skill to slot {slotIndex - 1}: {skillName}");
                 }
-                else
-                {
-                    GD.Print($"Skill data not found for: {skillName}");
-                }
-            }
-            
-            if (slotIndex == 0)
-            {
-                GD.Print("No skills were added to the skill bar");
             }
         }
 

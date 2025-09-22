@@ -33,6 +33,9 @@ namespace NewWorldEvolution.UI
 
         // Update Timer
         private Timer _refreshTimer;
+        
+        // Target Panel
+        private TargetPanel _targetPanel;
 
         public override void _Ready()
         {
@@ -73,6 +76,9 @@ namespace NewWorldEvolution.UI
 
             // Timer
             _refreshTimer = GetNodeOrNull<Timer>("RefreshTimer");
+            
+            // Target panel
+            _targetPanel = GetNodeOrNull<TargetPanel>("TargetPanel");
         }
 
         private void ConnectSignals()
@@ -374,6 +380,22 @@ namespace NewWorldEvolution.UI
                 tween.TweenProperty(_manaBar, "modulate", Colors.Blue, 0.1f);
                 tween.TweenProperty(_manaBar, "modulate", Colors.White, 0.2f);
             }
+        }
+        
+        // Target panel management
+        public void SetTarget(Entities.BaseMonster target)
+        {
+            _targetPanel?.SetTarget(target);
+        }
+        
+        public void ClearTarget()
+        {
+            _targetPanel?.ClearTarget();
+        }
+        
+        public bool HasTarget()
+        {
+            return _targetPanel?.HasTarget() ?? false;
         }
     }
 }

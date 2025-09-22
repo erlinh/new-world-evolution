@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://detn7mqnwpq7e"]
+[gd_scene load_steps=10 format=3 uid="uid://detn7mqnwpq7e"]
 
 [ext_resource type="Script" uid="uid://37nu753b478" path="res://Scripts/UI/HUDManager.cs" id="1_abc123"]
 [ext_resource type="PackedScene" uid="uid://8cnavil3uiel" path="res://Scenes/UI/SkillBar.tscn" id="2_skillbar"]
+[ext_resource type="PackedScene" uid="uid://4mx1cnosxqco" path="res://Scenes/UI/TargetPanel.tscn" id="3_targetpanel"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
 bg_color = Color(0.1, 0.1, 0.15, 0.9)
@@ -360,6 +361,9 @@ color = Color(1, 0, 0, 1)
 layout_mode = 1
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="TargetPanel" parent="." instance=ExtResource("3_targetpanel")]
+layout_mode = 1
 
 [node name="UIAnimationPlayer" type="AnimationPlayer" parent="."]
 

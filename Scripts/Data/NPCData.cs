@@ -70,31 +70,6 @@ namespace NewWorldEvolution.Data
         }
     }
 
-    [System.Serializable]
-    public class MonsterData
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Species { get; set; }
-        public string EvolutionStage { get; set; }
-        public int Level { get; set; }
-        public Dictionary<string, int> Stats { get; set; }
-        public List<string> Abilities { get; set; }
-        public string Territory { get; set; }
-        public bool IsAlive { get; set; }
-        public int Age { get; set; }
-        public List<string> OffspringIds { get; set; }
-        public string ParentId { get; set; }
-        public Vector2 Position { get; set; }
-        public string Behavior { get; set; }
-
-        public MonsterData()
-        {
-            Stats = new Dictionary<string, int>();
-            Abilities = new List<string>();
-            OffspringIds = new List<string>();
-        }
-    }
 
     [System.Serializable]
     public class SettlementData

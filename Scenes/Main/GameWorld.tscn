@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://e1f2g3h4i5j6k7l8"]
+[gd_scene load_steps=9 format=3 uid="uid://e1f2g3h4i5j6k7l8"]
 
-[ext_resource type="PackedScene" uid="uid://b2x3y4z5a6b7c8d9" path="res://Scenes/UI/HUD.tscn" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://detn7mqnwpq7e" path="res://Scenes/UI/HUD.tscn" id="1_hud"]
 [ext_resource type="PackedScene" uid="uid://a1b2c3d4e5f6g7h8" path="res://Scenes/Characters/Player/PlayerBase.tscn" id="2_player"]
 [ext_resource type="Script" path="res://Scripts/World/WorldSimulation.cs" id="3_worldsim"]
 [ext_resource type="Script" path="res://Scripts/World/SpawnManager.cs" id="4_spawn"]
 [ext_resource type="Script" path="res://Scripts/Systems/EconomySystem.cs" id="5_economy"]
-[ext_resource type="PackedScene" uid="uid://w1o2r3l4d5m6a7p8" path="res://Scenes/Environments/WorldMap.tscn" id="6_worldmap"]
+[ext_resource type="PackedScene" uid="uid://d2vdgl4d5d6dv" path="res://Scenes/Environments/WorldMap.tscn" id="6_worldmap"]
 [ext_resource type="Script" path="res://Scripts/World/MapManager.cs" id="7_mapmanager"]
+[ext_resource type="Script" path="res://Scripts/World/MonsterSpawner.cs" id="8_monsterspawner"]
 
 [node name="GameWorld" type="Node2D"]
 
@@ -24,6 +25,13 @@ script = ExtResource("5_economy")
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 position = Vector2(400, 300)
+
+[node name="MonsterSpawner" type="Node2D" parent="."]
+position = Vector2(0, 0)
+script = ExtResource("8_monsterspawner")
+MaxMonsters = 8
+SpawnRadius = 300.0
+SpawnInterval = 10.0
 
 [node name="UI" type="CanvasLayer" parent="."]
 

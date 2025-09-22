@@ -1,0 +1,92 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8ttikgxdr0lr"]
+
+[ext_resource type="Script" path="res://Scripts/UI/AbilitiesPanel.cs" id="1_abilities"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.15, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.6, 0.3, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.2, 0.2, 0.2, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.5, 0.5, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="AbilitiesPanel" type="Panel"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -180.0
+offset_right = 200.0
+offset_bottom = -90.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+script = ExtResource("1_abilities")
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+
+[node name="TitleLabel" type="Label" parent="Container"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "◊ ABILITIES ◊"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Container"]
+layout_mode = 2
+
+[node name="AbilitiesGrid" type="GridContainer" parent="Container"]
+layout_mode = 2
+size_flags_vertical = 3
+columns = 2
+
+[node name="BasicAttackButton" type="Button" parent="Container/AbilitiesGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+text = "Basic Attack
+[Q]"
+
+[node name="PowerStrikeButton" type="Button" parent="Container/AbilitiesGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+text = "Power Strike
+[W]"
+
+[node name="QuickSlashButton" type="Button" parent="Container/AbilitiesGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+text = "Quick Slash
+[E]"
+
+[node name="SpinAttackButton" type="Button" parent="Container/AbilitiesGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_2")
+text = "Spin Attack
+[R]"

@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using NewWorldEvolution.Data;
 using NewWorldEvolution.Core;
+using NewWorldEvolution.UI;
 
 namespace NewWorldEvolution.Player
 {
@@ -19,6 +20,13 @@ namespace NewWorldEvolution.Player
         // Visual indicators
         private Node2D _visualIndicators;
         private List<Node2D> _pathMarkers = new List<Node2D>();
+        private OverheadDisplay _overheadDisplay;
+        
+        // Combat and targeting
+        private Node2D _currentTarget;
+        private Node2D _targetIndicator;
+        private float _lastAttackTime = 0;
+        private float _attackCooldown = 1.0f; // 1 second attack cooldown
 
         public PlayerStats Stats { get; private set; }
         public string PlayerName { get; private set; }
@@ -38,6 +46,7 @@ namespace NewWorldEvolution.Player
 
             // Setup visual indicators - defer to avoid parent busy error
             CallDeferred(nameof(SetupVisualIndicators));
+            CallDeferred(nameof(SetupOverheadDisplay));
 
             InitializePlayer();
             GameManager.Instance.CurrentPlayer = this;
@@ -48,6 +57,16 @@ namespace NewWorldEvolution.Player
             _visualIndicators = new Node2D();
             _visualIndicators.Name = "VisualIndicators";
             GetParent().AddChild(_visualIndicators);
+        }
+
+        private void SetupOverheadDisplay()
+        {
+            _overheadDisplay = new OverheadDisplay();
+            string displayName = !string.IsNullOrEmpty(PlayerName) ? PlayerName : 
+                               !string.IsNullOrEmpty(GameManager.SelectedName) ? GameManager.SelectedName : "Player";
+            _overheadDisplay.SetEntity(this, displayName, Stats?.Level ?? 1, Colors.Cyan);
+            _overheadDisplay.ShowHealthBar(false); // Players don't need health bars by default
+            AddChild(_overheadDisplay);
         }
 
         private void InitializePlayer()
@@ -110,23 +129,66 @@ namespace NewWorldEvolution.Player
 
             Velocity = velocity;
             MoveAndSlide();
+            
+            // Handle targeting and combat
+            HandleTargetingLogic();
         }
 
         public override void _Input(InputEvent @event)
         {
-            // Handle right-click-to-move
-            if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Right)
+            if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
             {
-                // Convert screen position to world position
-                _targetPosition = GetGlobalMousePosition();
-                
-                // Only start moving if the target is far enough away
-                if (GlobalPosition.DistanceTo(_targetPosition) > ClickMoveThreshold)
+                if (mouseEvent.ButtonIndex == MouseButton.Left)
                 {
-                    CalculatePath(_targetPosition);
-                    ShowVisualIndicators();
-                    _isMovingToTarget = true;
+                    // Handle left-click targeting/attacking
+                    HandleLeftClick(mouseEvent);
                 }
+                else if (mouseEvent.ButtonIndex == MouseButton.Right)
+                {
+                    // Handle right-click-to-move
+                    HandleRightClick(mouseEvent);
+                }
+            }
+            
+            // Handle attack key (spacebar)
+            if (@event is InputEventKey keyEvent && keyEvent.Pressed && keyEvent.Keycode == Key.Space)
+            {
+                TryAttack();
+            }
+        }
+
+        private void HandleLeftClick(InputEventMouseButton mouseEvent)
+        {
+            // Check if we clicked on a monster
+            var clickPos = GetGlobalMousePosition();
+            var target = FindTargetAtPosition(clickPos);
+            
+            if (target != null)
+            {
+                SetTarget(target);
+                GD.Print("Target selected. Use abilities (Q/W/E/R) to attack!");
+            }
+            else
+            {
+                // Clear target if clicking on empty space
+                ClearTarget();
+            }
+        }
+
+        private void HandleRightClick(InputEventMouseButton mouseEvent)
+        {
+            // Convert screen position to world position
+            _targetPosition = GetGlobalMousePosition();
+            
+            // Clear any current target when right-clicking to move
+            ClearTarget();
+            
+            // Only start moving if the target is far enough away
+            if (GlobalPosition.DistanceTo(_targetPosition) > ClickMoveThreshold)
+            {
+                CalculatePath(_targetPosition);
+                ShowVisualIndicators();
+                _isMovingToTarget = true;
             }
         }
 
@@ -245,7 +307,22 @@ namespace NewWorldEvolution.Player
             // Check for evolution/profession opportunities
             CheckProgressionOpportunities();
             
-            GD.Print($"Level up! Now level {Stats.Level}");
+            GD.Print($"🎉 LEVEL UP! Player is now level {Stats.Level}!");
+            
+            // Update overhead display
+            string displayName = !string.IsNullOrEmpty(PlayerName) ? PlayerName : 
+                               !string.IsNullOrEmpty(GameManager.SelectedName) ? GameManager.SelectedName : "Player";
+            _overheadDisplay?.SetEntity(this, displayName, Stats.Level, Colors.Cyan);
+
+            // Visual effect
+            if (HasNode("Sprite2D"))
+            {
+                var sprite = GetNode<Sprite2D>("Sprite2D");
+                var tween = CreateTween();
+                tween.TweenProperty(sprite, "modulate", Colors.Gold, 0.3f);
+                tween.TweenProperty(sprite, "modulate", Colors.White, 0.5f);
+                tween.SetLoops(3);
+            }
         }
 
         private void DistributeStatPoints()
@@ -556,5 +633,456 @@ namespace NewWorldEvolution.Player
             }
             _pathMarkers.Clear();
         }
+
+        public void TakeDamage(int damage)
+        {
+            if (Stats == null) return;
+
+            Stats.Health -= damage;
+            Stats.Health = Mathf.Max(0, Stats.Health); // Don't go below 0
+
+            GD.Print($"Player takes {damage} damage! Health: {Stats.Health}/{Stats.MaxHealth}");
+
+            // Show damage effect
+            _overheadDisplay?.ShowDamage(damage);
+            _overheadDisplay?.ShowHealthBar(true); // Show health bar when taking damage
+            _overheadDisplay?.UpdateHealthBar(Stats.Health, Stats.MaxHealth);
+
+            // Hide health bar after 5 seconds
+            var timer = GetTree().CreateTimer(5.0);
+            timer.Timeout += () => _overheadDisplay?.ShowHealthBar(false);
+
+            // Flash the player sprite
+            if (HasNode("Sprite2D"))
+            {
+                var sprite = GetNode<Sprite2D>("Sprite2D");
+                var tween = CreateTween();
+                tween.TweenProperty(sprite, "modulate", Colors.Red, 0.1f);
+                tween.TweenProperty(sprite, "modulate", Colors.White, 0.2f);
+            }
+
+            // Check for death
+            if (Stats.Health <= 0)
+            {
+                Die();
+            }
+        }
+
+
+        private void Die()
+        {
+            GD.Print("💀 Player has died!");
+            
+            // TODO: Implement respawn system
+            // For now, just respawn at spawn location with full health
+            Stats.Health = Stats.MaxHealth;
+            var spawnLocation = GameManager.Instance?.CurrentSpawnLocation;
+            if (!string.IsNullOrEmpty(spawnLocation))
+            {
+                // Move to spawn - this is a simple implementation
+                GlobalPosition = new Vector2(400, 300); // Default position
+                GD.Print("Player respawned!");
+            }
+        }
+
+        private void HandleTargetingLogic()
+        {
+            // Clear target if it becomes invalid
+            if (_currentTarget != null && !IsInstanceValid(_currentTarget))
+            {
+                ClearTarget();
+            }
+        }
+
+        // Targeting and Combat Methods
+        private Node2D FindTargetAtPosition(Vector2 worldPosition)
+        {
+            // Use physics query to find what's at the click position
+            var spaceState = GetWorld2D().DirectSpaceState;
+            var query = new PhysicsPointQueryParameters2D();
+            query.Position = worldPosition;
+            query.CollisionMask = 1; // Assuming monsters are on layer 1
+            
+            var results = spaceState.IntersectPoint(query, 10);
+            
+            foreach (var result in results)
+            {
+                if (result.TryGetValue("collider", out var collider))
+                {
+                    var node = collider.Obj;
+                    // Check if it's a monster (has TakeDamage method)
+                    if (node is GodotObject godotNode && godotNode.HasMethod("TakeDamage") && node != this)
+                    {
+                        return (Node2D)node;
+                    }
+                }
+            }
+            
+            return null;
+        }
+
+        private void SetTarget(Node2D target)
+        {
+            _currentTarget = target;
+            CreateTargetIndicator();
+            
+            // Update HUD target panel
+            var hud = GetNode<UI.HUDManager>("/root/GameWorld/UI/HUD");
+            if (hud != null && target is Entities.BaseMonster monster)
+            {
+                hud.SetTarget(monster);
+            }
+            
+            GD.Print($"Target set: {target.Name}");
+        }
+
+        private void ClearTarget()
+        {
+            _currentTarget = null;
+            RemoveTargetIndicator();
+            
+            // Update HUD target panel
+            var hud = GetNode<UI.HUDManager>("/root/GameWorld/UI/HUD");
+            hud?.ClearTarget();
+        }
+
+        private void CreateTargetIndicator()
+        {
+            RemoveTargetIndicator();
+            
+            if (_currentTarget == null) return;
+            
+            _targetIndicator = new Node2D();
+            _targetIndicator.Name = "TargetIndicator";
+            
+            // Create a visual circle around the target
+            var circle = new ColorRect();
+            circle.Size = new Vector2(60, 60);
+            circle.Position = new Vector2(-30, -30);
+            circle.Color = new Color(1, 0, 0, 0.3f); // Semi-transparent red
+            
+            // Make it round by using a circular texture
+            var image = Image.CreateEmpty(60, 60, false, Image.Format.Rgba8);
+            for (int x = 0; x < 60; x++)
+            {
+                for (int y = 0; y < 60; y++)
+                {
+                    float distance = Mathf.Sqrt((x - 30) * (x - 30) + (y - 30) * (y - 30));
+                    if (distance >= 25 && distance <= 30) // Ring shape
+                    {
+                        image.SetPixel(x, y, new Color(1, 0, 0, 0.8f));
+                    }
+                }
+            }
+            
+            var texture = ImageTexture.CreateFromImage(image);
+            var textureRect = new TextureRect();
+            textureRect.Texture = texture;
+            textureRect.Size = new Vector2(60, 60);
+            textureRect.Position = new Vector2(-30, -30);
+            
+            _targetIndicator.AddChild(textureRect);
+            _currentTarget.AddChild(_targetIndicator);
+            
+            // Animate the indicator
+            var tween = _targetIndicator.CreateTween();
+            tween.SetLoops();
+            tween.TweenProperty(_targetIndicator, "modulate", new Color(1, 1, 1, 0.5f), 0.5f);
+            tween.TweenProperty(_targetIndicator, "modulate", Colors.White, 0.5f);
+        }
+
+        private void RemoveTargetIndicator()
+        {
+            if (_targetIndicator != null && IsInstanceValid(_targetIndicator))
+            {
+                _targetIndicator.QueueFree();
+                _targetIndicator = null;
+            }
+        }
+
+        private bool IsTargetInAttackRange()
+        {
+            if (_currentTarget == null || !IsInstanceValid(_currentTarget))
+                return false;
+                
+            float attackRange = 50.0f; // Player attack range
+            return GlobalPosition.DistanceTo(_currentTarget.GlobalPosition) <= attackRange;
+        }
+
+        private void MoveToTarget()
+        {
+            if (_currentTarget == null || !IsInstanceValid(_currentTarget))
+            {
+                ClearTarget();
+                return;
+            }
+            
+            // Stop any current movement
+            _isMovingToTarget = false;
+            ClearVisualIndicators();
+            
+            // Move towards target
+            Vector2 targetPos = _currentTarget.GlobalPosition;
+            float attackRange = 45.0f; // Get close enough to attack
+            Vector2 direction = (targetPos - GlobalPosition).Normalized();
+            Vector2 destination = targetPos - direction * attackRange;
+            
+            CalculatePath(destination);
+            ShowVisualIndicators();
+            _isMovingToTarget = true;
+        }
+
+        private void TryAttack()
+        {
+            if (_currentTarget == null || !IsInstanceValid(_currentTarget))
+                return;
+                
+            if (!IsTargetInAttackRange())
+            {
+                GD.Print("Target too far away!");
+                return;
+            }
+            
+            float timeSinceLastAttack = (float)Time.GetUnixTimeFromSystem() - _lastAttackTime;
+            if (timeSinceLastAttack < _attackCooldown)
+            {
+                GD.Print($"Attack on cooldown: {_attackCooldown - timeSinceLastAttack:F1}s remaining");
+                return;
+            }
+            
+            // Perform attack
+            PerformAttack();
+            _lastAttackTime = (float)Time.GetUnixTimeFromSystem();
+        }
+
+        private void PerformAttack()
+        {
+            if (_currentTarget == null) return;
+            
+            // Calculate damage based on player stats
+            int baseDamage = 20; // Base player damage
+            int totalDamage = baseDamage + (Stats?.Level ?? 1) * 3;
+            
+            GD.Print($"Player attacks {_currentTarget.Name} for {totalDamage} damage!");
+            
+            // Apply damage to target
+            if (_currentTarget.HasMethod("TakeDamage"))
+            {
+                _currentTarget.Call("TakeDamage", totalDamage);
+            }
+            
+            // Visual attack effect
+            ShowAttackEffect();
+            
+            // Check if target is still valid after attack
+            if (_currentTarget.HasMethod("IsDead") && (bool)_currentTarget.Call("IsDead"))
+            {
+                ClearTarget();
+            }
+        }
+
+        private void ShowAttackEffect()
+        {
+            // Create a simple attack animation
+            if (_currentTarget == null) return;
+            
+            var attackEffect = new Node2D();
+            attackEffect.Name = "AttackEffect";
+            attackEffect.GlobalPosition = _currentTarget.GlobalPosition;
+            
+            // Create impact effect
+            var impact = new ColorRect();
+            impact.Size = new Vector2(20, 20);
+            impact.Position = new Vector2(-10, -10);
+            impact.Color = Colors.Yellow;
+            attackEffect.AddChild(impact);
+            
+            GetParent().AddChild(attackEffect);
+            
+            // Animate the effect
+            var tween = attackEffect.CreateTween();
+            tween.TweenProperty(impact, "scale", Vector2.One * 2, 0.2f);
+            tween.Parallel().TweenProperty(impact, "modulate", new Color(1, 1, 0, 0), 0.2f);
+            tween.TweenCallback(Callable.From(() => attackEffect.QueueFree()));
+            
+            // Flash player sprite
+            if (HasNode("Sprite2D"))
+            {
+                var sprite = GetNode<Sprite2D>("Sprite2D");
+                var playerTween = CreateTween();
+                playerTween.TweenProperty(sprite, "modulate", Colors.Yellow, 0.1f);
+                playerTween.TweenProperty(sprite, "modulate", Colors.White, 0.1f);
+            }
+        }
+
+
+        // Ability System
+        public void UseAbility(string abilityName)
+        {
+            if (_currentTarget == null || !IsInstanceValid(_currentTarget) || !IsTargetInAttackRange())
+            {
+                GD.Print($"Cannot use {abilityName}: No target or target out of range");
+                return;
+            }
+
+            int damage = CalculateAbilityDamage(abilityName);
+            string effectDescription = GetAbilityEffect(abilityName);
+            
+            GD.Print($"Player uses {abilityName} on {_currentTarget.Name} for {damage} damage! {effectDescription}");
+            
+            // Apply damage
+            if (_currentTarget.HasMethod("TakeDamage"))
+            {
+                _currentTarget.Call("TakeDamage", damage);
+            }
+            
+            // Show special effect
+            ShowAbilityEffect(abilityName);
+            
+            // Check if target died
+            if (_currentTarget.HasMethod("IsDead") && (bool)_currentTarget.Call("IsDead"))
+            {
+                ClearTarget();
+            }
+        }
+
+        private int CalculateAbilityDamage(string abilityName)
+        {
+            int baseDamage = 20;
+            int levelBonus = (Stats?.Level ?? 1) * 3;
+            
+            return abilityName switch
+            {
+                "BasicAttack" => baseDamage + levelBonus,
+                "PowerStrike" => (baseDamage + levelBonus) * 2, // Double damage
+                "QuickSlash" => (baseDamage + levelBonus) / 2, // Half damage but faster
+                "SpinAttack" => baseDamage + levelBonus + 15, // Area damage bonus
+                _ => baseDamage + levelBonus
+            };
+        }
+
+        private string GetAbilityEffect(string abilityName)
+        {
+            return abilityName switch
+            {
+                "BasicAttack" => "",
+                "PowerStrike" => "(Powerful blow!)",
+                "QuickSlash" => "(Lightning fast!)",
+                "SpinAttack" => "(Area attack!)",
+                _ => ""
+            };
+        }
+
+        private void ShowAbilityEffect(string abilityName)
+        {
+            if (_currentTarget == null) return;
+            
+            Color effectColor = abilityName switch
+            {
+                "BasicAttack" => Colors.Yellow,
+                "PowerStrike" => Colors.Red,
+                "QuickSlash" => Colors.Cyan,
+                "SpinAttack" => Colors.Orange,
+                _ => Colors.White
+            };
+            
+            var attackEffect = new Node2D();
+            attackEffect.Name = $"{abilityName}Effect";
+            attackEffect.GlobalPosition = _currentTarget.GlobalPosition;
+            
+            // Create different effects for different abilities
+            CreateAbilityVisualEffect(attackEffect, abilityName, effectColor);
+            
+            GetParent().AddChild(attackEffect);
+            
+            // Animate the effect
+            var tween = attackEffect.CreateTween();
+            tween.TweenProperty(attackEffect, "scale", Vector2.One * 2, 0.3f);
+            tween.Parallel().TweenProperty(attackEffect, "modulate", new Color(effectColor.R, effectColor.G, effectColor.B, 0), 0.3f);
+            tween.TweenCallback(Callable.From(() => attackEffect.QueueFree()));
+            
+            // Flash player sprite with ability color
+            if (HasNode("Sprite2D"))
+            {
+                var sprite = GetNode<Sprite2D>("Sprite2D");
+                var playerTween = CreateTween();
+                playerTween.TweenProperty(sprite, "modulate", effectColor, 0.1f);
+                playerTween.TweenProperty(sprite, "modulate", Colors.White, 0.2f);
+            }
+        }
+
+        private void CreateAbilityVisualEffect(Node2D parent, string abilityName, Color color)
+        {
+            switch (abilityName)
+            {
+                case "BasicAttack":
+                    CreateBasicAttackEffect(parent, color);
+                    break;
+                case "PowerStrike":
+                    CreatePowerStrikeEffect(parent, color);
+                    break;
+                case "QuickSlash":
+                    CreateQuickSlashEffect(parent, color);
+                    break;
+                case "SpinAttack":
+                    CreateSpinAttackEffect(parent, color);
+                    break;
+            }
+        }
+
+        private void CreateBasicAttackEffect(Node2D parent, Color color)
+        {
+            var impact = new ColorRect();
+            impact.Size = new Vector2(20, 20);
+            impact.Position = new Vector2(-10, -10);
+            impact.Color = color;
+            parent.AddChild(impact);
+        }
+
+        private void CreatePowerStrikeEffect(Node2D parent, Color color)
+        {
+            // Larger impact with multiple circles
+            for (int i = 0; i < 3; i++)
+            {
+                var impact = new ColorRect();
+                impact.Size = new Vector2(30 + i * 10, 30 + i * 10);
+                impact.Position = new Vector2(-(15 + i * 5), -(15 + i * 5));
+                impact.Color = new Color(color.R, color.G, color.B, 0.7f - i * 0.2f);
+                parent.AddChild(impact);
+            }
+        }
+
+        private void CreateQuickSlashEffect(Node2D parent, Color color)
+        {
+            // Multiple small slashes
+            for (int i = 0; i < 5; i++)
+            {
+                var slash = new ColorRect();
+                slash.Size = new Vector2(15, 5);
+                slash.Position = new Vector2(-7.5f + i * 3, -2.5f);
+                slash.Color = color;
+                parent.AddChild(slash);
+            }
+        }
+
+        private void CreateSpinAttackEffect(Node2D parent, Color color)
+        {
+            // Circular effect
+            for (int i = 0; i < 8; i++)
+            {
+                var blade = new ColorRect();
+                blade.Size = new Vector2(25, 8);
+                blade.Position = new Vector2(-12.5f, -4);
+                blade.Rotation = i * Mathf.Pi / 4;
+                blade.Color = color;
+                parent.AddChild(blade);
+            }
+        }
+
+        // Public getters for monsters and other systems
+        public PlayerStats GetStats() => Stats;
+        public bool IsAlive() => Stats?.Health > 0;
+        public Node2D GetCurrentTarget() => _currentTarget;
+        public bool HasTarget() => _currentTarget != null && IsInstanceValid(_currentTarget);
     }
 }

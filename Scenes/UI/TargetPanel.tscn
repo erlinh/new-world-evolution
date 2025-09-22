@@ -1,0 +1,108 @@
+[gd_scene load_steps=4 format=3 uid="uid://4mx1cnosxqco"]
+
+[ext_resource type="Script" path="res://Scripts/UI/TargetPanel.cs" id="1_targetpanel"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.1, 0.1, 0.2, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.2, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.8, 0.2, 0.2, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="TargetPanel" type="Panel"]
+visible = false
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 150.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+script = ExtResource("1_targetpanel")
+
+[node name="Container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+
+[node name="TargetTitle" type="Label" parent="Container"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.8, 1)
+theme_override_font_sizes/font_size = 14
+text = "◊ TARGET ◊"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Container"]
+layout_mode = 2
+
+[node name="TargetInfo" type="VBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="Container/TargetInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.8, 1)
+theme_override_font_sizes/font_size = 13
+text = "Gray Wolf"
+
+[node name="LevelLabel" type="Label" parent="Container/TargetInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 1, 0.8, 1)
+text = "Level: 3"
+
+[node name="TypeLabel" type="Label" parent="Container/TargetInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.8, 1, 1)
+text = "Beast - Territorial"
+
+[node name="HSeparator2" type="HSeparator" parent="Container"]
+layout_mode = 2
+
+[node name="HealthContainer" type="VBoxContainer" parent="Container"]
+layout_mode = 2
+
+[node name="HealthLabel" type="Label" parent="Container/HealthContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.6, 0.6, 1)
+text = "Health"
+
+[node name="HealthBar" type="ProgressBar" parent="Container/HealthContainer"]
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_2")
+max_value = 100.0
+value = 85.0
+show_percentage = false
+
+[node name="HealthText" type="Label" parent="Container/HealthContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 10
+text = "85/100"
+horizontal_alignment = 1
+
+[node name="HSeparator3" type="HSeparator" parent="Container"]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="Container"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8, 0.4, 1)
+theme_override_font_sizes/font_size = 10
+text = "State: Hostile"
