@@ -17,7 +17,8 @@ namespace NewWorldEvolution.Data
         Survival,
         Social,
         Stealth,
-        Knowledge
+        Knowledge,
+        Unique
     }
 
     [System.Serializable]

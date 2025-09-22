@@ -1,0 +1,340 @@
+[gd_scene load_steps=0 format=3 uid="uid://d2vdgl4d5d6dv"]
+
+[node name="WorldMap" type="Node2D"]
+
+[node name="Terrain" type="Node2D" parent="."]
+
+[node name="Grasslands" type="ColorRect" parent="Terrain"]
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 500.0
+offset_bottom = 300.0
+color = Color(0.4, 0.7, 0.3, 1)
+
+[node name="Forest" type="ColorRect" parent="Terrain"]
+offset_left = -800.0
+offset_top = -500.0
+offset_right = -300.0
+offset_bottom = 200.0
+color = Color(0.2, 0.5, 0.2, 1)
+
+[node name="Desert" type="ColorRect" parent="Terrain"]
+offset_left = 300.0
+offset_top = -400.0
+offset_right = 800.0
+offset_bottom = 100.0
+color = Color(0.8, 0.7, 0.4, 1)
+
+[node name="Mountains" type="ColorRect" parent="Terrain"]
+offset_left = -200.0
+offset_top = -600.0
+offset_right = 600.0
+offset_bottom = -300.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="Swampland" type="ColorRect" parent="Terrain"]
+offset_left = -600.0
+offset_top = 200.0
+offset_right = 0.0
+offset_bottom = 500.0
+color = Color(0.3, 0.4, 0.2, 1)
+
+[node name="Volcanic" type="ColorRect" parent="Terrain"]
+offset_left = 400.0
+offset_top = 100.0
+offset_right = 700.0
+offset_bottom = 400.0
+color = Color(0.6, 0.3, 0.2, 1)
+
+[node name="Roads" type="Node2D" parent="."]
+
+[node name="MainRoad" type="ColorRect" parent="Roads"]
+offset_left = -800.0
+offset_top = -10.0
+offset_right = 800.0
+offset_bottom = 10.0
+color = Color(0.6, 0.5, 0.4, 1)
+
+[node name="NorthRoad" type="ColorRect" parent="Roads"]
+offset_left = -10.0
+offset_top = -600.0
+offset_right = 10.0
+offset_bottom = 300.0
+color = Color(0.6, 0.5, 0.4, 1)
+
+[node name="ForestPath" type="ColorRect" parent="Roads"]
+offset_left = -600.0
+offset_top = -150.0
+offset_right = -300.0
+offset_bottom = -130.0
+color = Color(0.5, 0.4, 0.3, 1)
+
+[node name="DesertTrail" type="ColorRect" parent="Roads"]
+offset_left = 300.0
+offset_top = -200.0
+offset_right = 600.0
+offset_bottom = -180.0
+color = Color(0.7, 0.6, 0.5, 1)
+
+[node name="Rivers" type="Node2D" parent="."]
+
+[node name="MainRiver" type="ColorRect" parent="Rivers"]
+offset_left = -400.0
+offset_top = 150.0
+offset_right = 400.0
+offset_bottom = 170.0
+color = Color(0.2, 0.4, 0.8, 1)
+
+[node name="MountainStream" type="ColorRect" parent="Rivers"]
+offset_left = 100.0
+offset_top = -500.0
+offset_right = 120.0
+offset_bottom = 150.0
+color = Color(0.3, 0.5, 0.9, 1)
+
+[node name="SwampCreek" type="ColorRect" parent="Rivers"]
+offset_left = -450.0
+offset_top = 250.0
+offset_right = -200.0
+offset_bottom = 270.0
+color = Color(0.2, 0.3, 0.5, 1)
+
+[node name="Landmarks" type="Node2D" parent="."]
+
+[node name="HumanVillage" type="Node2D" parent="Landmarks"]
+position = Vector2(100, 100)
+
+[node name="Houses" type="Node2D" parent="Landmarks/HumanVillage"]
+
+[node name="House1" type="ColorRect" parent="Landmarks/HumanVillage/Houses"]
+offset_left = -30.0
+offset_top = -20.0
+offset_right = -10.0
+offset_bottom = 0.0
+color = Color(0.8, 0.6, 0.4, 1)
+
+[node name="House2" type="ColorRect" parent="Landmarks/HumanVillage/Houses"]
+offset_left = 10.0
+offset_top = -25.0
+offset_right = 30.0
+offset_bottom = -5.0
+color = Color(0.8, 0.6, 0.4, 1)
+
+[node name="House3" type="ColorRect" parent="Landmarks/HumanVillage/Houses"]
+offset_left = -10.0
+offset_top = 10.0
+offset_right = 10.0
+offset_bottom = 30.0
+color = Color(0.8, 0.6, 0.4, 1)
+
+[node name="Well" type="ColorRect" parent="Landmarks/HumanVillage"]
+offset_left = -5.0
+offset_top = -35.0
+offset_right = 5.0
+offset_bottom = -25.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="GoblinCave" type="Node2D" parent="Landmarks"]
+position = Vector2(-450, 150)
+
+[node name="CaveEntrance" type="ColorRect" parent="Landmarks/GoblinCave"]
+offset_left = -25.0
+offset_top = -15.0
+offset_right = 25.0
+offset_bottom = 15.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Rocks" type="Node2D" parent="Landmarks/GoblinCave"]
+
+[node name="Rock1" type="ColorRect" parent="Landmarks/GoblinCave/Rocks"]
+offset_left = -40.0
+offset_top = -10.0
+offset_right = -30.0
+offset_bottom = 0.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Rock2" type="ColorRect" parent="Landmarks/GoblinCave/Rocks"]
+offset_left = 30.0
+offset_top = -5.0
+offset_right = 40.0
+offset_bottom = 5.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="SpiderNest" type="Node2D" parent="Landmarks"]
+position = Vector2(-600, -200)
+
+[node name="WebStructure" type="ColorRect" parent="Landmarks/SpiderNest"]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0.1, 0.1, 0.1, 1)
+
+[node name="WebLines" type="Node2D" parent="Landmarks/SpiderNest"]
+
+[node name="Web1" type="ColorRect" parent="Landmarks/SpiderNest/WebLines"]
+offset_left = -40.0
+offset_top = -2.0
+offset_right = 40.0
+offset_bottom = 2.0
+color = Color(0.8, 0.8, 0.8, 0.5)
+
+[node name="Web2" type="ColorRect" parent="Landmarks/SpiderNest/WebLines"]
+offset_left = -2.0
+offset_top = -40.0
+offset_right = 2.0
+offset_bottom = 40.0
+color = Color(0.8, 0.8, 0.8, 0.5)
+
+[node name="AncientRuins" type="Node2D" parent="Landmarks"]
+position = Vector2(400, -350)
+
+[node name="Pillars" type="Node2D" parent="Landmarks/AncientRuins"]
+
+[node name="Pillar1" type="ColorRect" parent="Landmarks/AncientRuins/Pillars"]
+offset_left = -40.0
+offset_top = -15.0
+offset_right = -30.0
+offset_bottom = 15.0
+color = Color(0.7, 0.7, 0.6, 1)
+
+[node name="Pillar2" type="ColorRect" parent="Landmarks/AncientRuins/Pillars"]
+offset_left = 30.0
+offset_top = -15.0
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(0.7, 0.7, 0.6, 1)
+
+[node name="Altar" type="ColorRect" parent="Landmarks/AncientRuins"]
+offset_left = -20.0
+offset_top = -10.0
+offset_right = 20.0
+offset_bottom = 10.0
+color = Color(0.6, 0.6, 0.5, 1)
+
+[node name="TradingPost" type="Node2D" parent="Landmarks"]
+position = Vector2(250, 250)
+
+[node name="Market" type="ColorRect" parent="Landmarks/TradingPost"]
+offset_left = -25.0
+offset_top = -15.0
+offset_right = 25.0
+offset_bottom = 15.0
+color = Color(0.9, 0.7, 0.3, 1)
+
+[node name="Stalls" type="Node2D" parent="Landmarks/TradingPost"]
+
+[node name="Stall1" type="ColorRect" parent="Landmarks/TradingPost/Stalls"]
+offset_left = -15.0
+offset_top = -25.0
+offset_right = -5.0
+offset_bottom = -15.0
+color = Color(0.8, 0.5, 0.2, 1)
+
+[node name="Stall2" type="ColorRect" parent="Landmarks/TradingPost/Stalls"]
+offset_left = 5.0
+offset_top = -25.0
+offset_right = 15.0
+offset_bottom = -15.0
+color = Color(0.8, 0.5, 0.2, 1)
+
+[node name="VolcanicRift" type="Node2D" parent="Landmarks"]
+position = Vector2(550, 250)
+
+[node name="LavaPool" type="ColorRect" parent="Landmarks/VolcanicRift"]
+offset_left = -20.0
+offset_top = -15.0
+offset_right = 20.0
+offset_bottom = 15.0
+color = Color(1, 0.3, 0, 1)
+
+[node name="SmokeVents" type="Node2D" parent="Landmarks/VolcanicRift"]
+
+[node name="Vent1" type="ColorRect" parent="Landmarks/VolcanicRift/SmokeVents"]
+offset_left = -30.0
+offset_top = -5.0
+offset_right = -25.0
+offset_bottom = 0.0
+color = Color(0.3, 0.3, 0.3, 0.7)
+
+[node name="Vent2" type="ColorRect" parent="Landmarks/VolcanicRift/SmokeVents"]
+offset_left = 25.0
+offset_top = -8.0
+offset_right = 30.0
+offset_bottom = -3.0
+color = Color(0.3, 0.3, 0.3, 0.7)
+
+[node name="GridLines" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0.2)
+
+[node name="VerticalLines" type="Node2D" parent="GridLines"]
+
+[node name="VLine1" type="ColorRect" parent="GridLines/VerticalLines"]
+offset_left = -400.0
+offset_top = -600.0
+offset_right = -398.0
+offset_bottom = 600.0
+color = Color(1, 1, 1, 1)
+
+[node name="VLine2" type="ColorRect" parent="GridLines/VerticalLines"]
+offset_left = -200.0
+offset_top = -600.0
+offset_right = -198.0
+offset_bottom = 600.0
+color = Color(1, 1, 1, 1)
+
+[node name="VLine3" type="ColorRect" parent="GridLines/VerticalLines"]
+offset_top = -600.0
+offset_right = 2.0
+offset_bottom = 600.0
+color = Color(1, 1, 1, 1)
+
+[node name="VLine4" type="ColorRect" parent="GridLines/VerticalLines"]
+offset_left = 200.0
+offset_top = -600.0
+offset_right = 202.0
+offset_bottom = 600.0
+color = Color(1, 1, 1, 1)
+
+[node name="VLine5" type="ColorRect" parent="GridLines/VerticalLines"]
+offset_left = 400.0
+offset_top = -600.0
+offset_right = 402.0
+offset_bottom = 600.0
+color = Color(1, 1, 1, 1)
+
+[node name="HorizontalLines" type="Node2D" parent="GridLines"]
+
+[node name="HLine1" type="ColorRect" parent="GridLines/HorizontalLines"]
+offset_left = -800.0
+offset_top = -400.0
+offset_right = 800.0
+offset_bottom = -398.0
+color = Color(1, 1, 1, 1)
+
+[node name="HLine2" type="ColorRect" parent="GridLines/HorizontalLines"]
+offset_left = -800.0
+offset_top = -200.0
+offset_right = 800.0
+offset_bottom = -198.0
+color = Color(1, 1, 1, 1)
+
+[node name="HLine3" type="ColorRect" parent="GridLines/HorizontalLines"]
+offset_left = -800.0
+offset_right = 800.0
+offset_bottom = 2.0
+color = Color(1, 1, 1, 1)
+
+[node name="HLine4" type="ColorRect" parent="GridLines/HorizontalLines"]
+offset_left = -800.0
+offset_top = 200.0
+offset_right = 800.0
+offset_bottom = 202.0
+color = Color(1, 1, 1, 1)
+
+[node name="HLine5" type="ColorRect" parent="GridLines/HorizontalLines"]
+offset_left = -800.0
+offset_top = 400.0
+offset_right = 800.0
+offset_bottom = 402.0
+color = Color(1, 1, 1, 1)

@@ -12,9 +12,14 @@ namespace NewWorldEvolution.UI
         
         public override void _Ready()
         {
-            _statsLabel = GetNode<Label>("HUD/StatsPanel/StatsLabel");
-            _worldInfoLabel = GetNode<Label>("HUD/WorldInfoPanel/WorldInfoLabel");
-            _eventList = GetNode<VBoxContainer>("HUD/EventLog/EventScrollContainer/EventList");
+            // Try to get HUD nodes with null checks
+            _statsLabel = GetNodeOrNull<Label>("HUD/StatsPanel/StatsLabel");
+            _worldInfoLabel = GetNodeOrNull<Label>("HUD/WorldInfoPanel/WorldInfoLabel");
+            _eventList = GetNodeOrNull<VBoxContainer>("HUD/EventLog/EventScrollContainer/EventList");
+            
+            if (_statsLabel == null) GD.Print("Warning: StatsLabel not found in HUD");
+            if (_worldInfoLabel == null) GD.Print("Warning: WorldInfoLabel not found in HUD");
+            if (_eventList == null) GD.Print("Warning: EventList not found in HUD");
             
             // Connect to world simulation events
             if (WorldSimulation.Instance != null)

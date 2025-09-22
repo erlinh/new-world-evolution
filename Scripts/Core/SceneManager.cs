@@ -7,7 +7,6 @@ namespace NewWorldEvolution.Core
     {
         public static SceneManager Instance { get; private set; }
 
-        [Export] public string MainMenuPath = "res://Scenes/Main/MainMenu.tscn";
         [Export] public string GameWorldPath = "res://Scenes/Main/GameWorld.tscn";
         [Export] public string CharacterCreationPath = "res://Scenes/Main/CharacterCreation.tscn";
 
@@ -22,11 +21,6 @@ namespace NewWorldEvolution.Core
             {
                 QueueFree();
             }
-        }
-
-        public void LoadMainMenu()
-        {
-            GetTree().ChangeSceneToFile(MainMenuPath);
         }
 
         public void LoadCharacterCreation()

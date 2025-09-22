@@ -1,17 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://b2n6vl3p7hfnj"]
+[gd_scene load_steps=6 format=3 uid="uid://a1b2c3d4e5f6g7h8"]
 
-[ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="1_8n2qp"]
-[ext_resource type="Script" path="res://Scripts/Player/PlayerStats.cs" id="2_vr8km"]
-[ext_resource type="Script" path="res://Scripts/Skills/SkillManager.cs" id="3_k4q8m"]
-[ext_resource type="Script" path="res://Scripts/Goals/GoalManager.cs" id="4_g7h2s"]
-[ext_resource type="Script" path="res://Scripts/Player/Evolution/EvolutionManager.cs" id="5_m8n1p"]
-[ext_resource type="Script" path="res://Scripts/Player/Profession/ProfessionManager.cs" id="6_q9r4t"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerController.cs" id="1_player"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerStats.cs" id="2_stats"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillManager.cs" id="3_skills"]
+[ext_resource type="Script" path="res://Scripts/Goals/GoalManager.cs" id="4_goals"]
+[ext_resource type="Script" path="res://Scripts/Player/Evolution/EvolutionManager.cs" id="5_evolution"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
-size = Vector2(16, 24)
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_player")
 
-[node name="PlayerBase" type="CharacterBody2D"]
-script = ExtResource("1_8n2qp")
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = true
+
+[node name="PlayerStats" type="Node" parent="."]
+script = ExtResource("2_stats")
+
+[node name="SkillManager" type="Node" parent="."]
+script = ExtResource("3_skills")
+
+[node name="GoalManager" type="Node" parent="."]
+script = ExtResource("4_goals")
+
+[node name="EvolutionManager" type="Node" parent="."]
+script = ExtResource("5_evolution")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="VisualRepresentation" type="Node2D" parent="."]
 
@@ -21,10 +34,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -8.0
-offset_top = -12.0
-offset_right = 8.0
-offset_bottom = 12.0
+offset_left = -15.0
+offset_top = -10.0
+offset_right = 15.0
+offset_bottom = 20.0
 color = Color(0.7, 0.7, 0.9, 1)
 
 [node name="Head" type="ColorRect" parent="VisualRepresentation"]
@@ -33,26 +46,8 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -6.0
-offset_top = -20.0
-offset_right = 6.0
-offset_bottom = -8.0
+offset_left = -10.0
+offset_top = -25.0
+offset_right = 10.0
+offset_bottom = -5.0
 color = Color(0.9, 0.8, 0.7, 1)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_1")
-
-[node name="PlayerStats" type="Node" parent="."]
-script = ExtResource("2_vr8km")
-
-[node name="SkillManager" type="Node" parent="."]
-script = ExtResource("3_k4q8m")
-
-[node name="GoalManager" type="Node" parent="."]
-script = ExtResource("4_g7h2s")
-
-[node name="EvolutionManager" type="Node" parent="."]
-script = ExtResource("5_m8n1p")
-
-[node name="ProfessionManager" type="Node" parent="."]
-script = ExtResource("6_q9r4t")

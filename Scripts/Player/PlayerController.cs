@@ -8,7 +8,17 @@ namespace NewWorldEvolution.Player
     public partial class PlayerController : CharacterBody2D
     {
         [Export] public float Speed = 200.0f;
-        [Export] public float JumpVelocity = -300.0f;
+        [Export] public float ClickMoveThreshold = 10.0f; // Minimum distance to trigger click movement
+        [Export] public float PathNodeDistance = 50.0f; // Distance between path nodes for visualization
+
+        private Vector2 _targetPosition;
+        private bool _isMovingToTarget = false;
+        private List<Vector2> _currentPath = new List<Vector2>();
+        private int _currentPathIndex = 0;
+        
+        // Visual indicators
+        private Node2D _visualIndicators;
+        private List<Node2D> _pathMarkers = new List<Node2D>();
 
         public PlayerStats Stats { get; private set; }
         public string PlayerName { get; private set; }
@@ -20,21 +30,35 @@ namespace NewWorldEvolution.Player
         private Skills.SkillManager _skillManager;
         private Goals.GoalManager _goalManager;
 
-        public float gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
-
         public override void _Ready()
         {
             Stats = new PlayerStats();
             _skillManager = GetNode<Skills.SkillManager>("SkillManager");
             _goalManager = GetNode<Goals.GoalManager>("GoalManager");
 
+            // Setup visual indicators - defer to avoid parent busy error
+            CallDeferred(nameof(SetupVisualIndicators));
+
             InitializePlayer();
             GameManager.Instance.CurrentPlayer = this;
         }
 
+        private void SetupVisualIndicators()
+        {
+            _visualIndicators = new Node2D();
+            _visualIndicators.Name = "VisualIndicators";
+            GetParent().AddChild(_visualIndicators);
+        }
+
         private void InitializePlayer()
         {
+            // Try to get race from GameManager's CurrentPlayerRace, fallback to SelectedRace
             CurrentRace = GameManager.Instance.CurrentPlayerRace;
+            if (string.IsNullOrEmpty(CurrentRace))
+            {
+                CurrentRace = GameManager.SelectedRace;
+                GameManager.Instance.CurrentPlayerRace = CurrentRace;
+            }
             
             if (!string.IsNullOrEmpty(CurrentRace))
             {
@@ -66,40 +90,116 @@ namespace NewWorldEvolution.Player
 
         public override void _PhysicsProcess(double delta)
         {
-            Vector2 velocity = Velocity;
+            Vector2 velocity = Vector2.Zero;
 
-            // Add gravity
-            if (!IsOnFloor())
-                velocity.Y += gravity * (float)delta;
-
-            // Handle jump
-            if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-                velocity.Y = JumpVelocity;
-
-            // Handle movement
-            Vector2 direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-            if (direction != Vector2.Zero)
+            // Handle manual keyboard movement (takes priority over click movement)
+            Vector2 inputDirection = GetKeyboardInput();
+            
+            if (inputDirection.Length() > 0)
             {
-                velocity.X = direction.X * Speed;
-                // Moving - could add movement effects here later
+                // Manual movement - cancel click movement
+                _isMovingToTarget = false;
+                ClearVisualIndicators();
+                velocity = inputDirection.Normalized() * Speed;
             }
-            else
+            else if (_isMovingToTarget)
             {
-                velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-                // Idle - could add idle effects here later
+                // Click-to-move behavior
+                velocity = HandleClickMovement();
             }
 
             Velocity = velocity;
             MoveAndSlide();
         }
 
+        public override void _Input(InputEvent @event)
+        {
+            // Handle right-click-to-move
+            if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Right)
+            {
+                // Convert screen position to world position
+                _targetPosition = GetGlobalMousePosition();
+                
+                // Only start moving if the target is far enough away
+                if (GlobalPosition.DistanceTo(_targetPosition) > ClickMoveThreshold)
+                {
+                    CalculatePath(_targetPosition);
+                    ShowVisualIndicators();
+                    _isMovingToTarget = true;
+                }
+            }
+        }
+
+        private Vector2 GetKeyboardInput()
+        {
+            Vector2 direction = Vector2.Zero;
+            
+            // Check for Arrow keys (UI actions)
+            if (Input.IsActionPressed("ui_left"))
+                direction.X -= 1;
+            if (Input.IsActionPressed("ui_right"))
+                direction.X += 1;
+            if (Input.IsActionPressed("ui_up"))
+                direction.Y -= 1;
+            if (Input.IsActionPressed("ui_down"))
+                direction.Y += 1;
+
+            // Check for WASD keys (custom movement actions)
+            if (Input.IsActionPressed("move_left"))
+                direction.X -= 1;
+            if (Input.IsActionPressed("move_right"))
+                direction.X += 1;
+            if (Input.IsActionPressed("move_up"))
+                direction.Y -= 1;
+            if (Input.IsActionPressed("move_down"))
+                direction.Y += 1;
+
+            return direction;
+        }
+
+        private Vector2 HandleClickMovement()
+        {
+            if (_currentPath.Count == 0)
+            {
+                _isMovingToTarget = false;
+                ClearVisualIndicators();
+                return Vector2.Zero;
+            }
+
+            // Get current target from path
+            Vector2 currentTarget = _currentPath[_currentPathIndex];
+            Vector2 toTarget = currentTarget - GlobalPosition;
+            float distanceToTarget = toTarget.Length();
+
+            // If we're close enough to current path node, move to next one
+            if (distanceToTarget < ClickMoveThreshold)
+            {
+                _currentPathIndex++;
+                
+                // If we've reached the end of the path, stop moving
+                if (_currentPathIndex >= _currentPath.Count)
+                {
+                    _isMovingToTarget = false;
+                    ClearVisualIndicators();
+                    return Vector2.Zero;
+                }
+                
+                // Update current target to next path node
+                currentTarget = _currentPath[_currentPathIndex];
+                toTarget = currentTarget - GlobalPosition;
+            }
+
+            // Move towards the current target
+            return toTarget.Normalized() * Speed;
+        }
+
         private void UpdateVisualRepresentation()
         {
-            var visualRep = GetNode<Node2D>("VisualRepresentation");
+            var visualRep = GetNodeOrNull<Node2D>("VisualRepresentation");
             if (visualRep != null)
             {
-                var body = visualRep.GetNode<ColorRect>("Body");
-                var head = visualRep.GetNode<ColorRect>("Head");
+                var body = visualRep.GetNodeOrNull<ColorRect>("Body");
+                var head = visualRep.GetNodeOrNull<ColorRect>("Head");
                 
                 if (body != null && head != null)
                 {
@@ -108,6 +208,15 @@ namespace NewWorldEvolution.Player
                     body.Color = raceColors.Body;
                     head.Color = raceColors.Head;
                 }
+            }
+            
+            // Also setup collision shape if it doesn't exist
+            var collisionShape = GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
+            if (collisionShape != null && collisionShape.Shape == null)
+            {
+                var rectShape = new RectangleShape2D();
+                rectShape.Size = new Vector2(30, 40); // Match the visual representation size
+                collisionShape.Shape = rectShape;
             }
         }
         
@@ -313,6 +422,139 @@ namespace NewWorldEvolution.Player
             {
                 GD.Print($"Player appearance updated for {currentForm}");
             }
+        }
+
+        private void CalculatePath(Vector2 targetPosition)
+        {
+            _currentPath.Clear();
+            _currentPathIndex = 0;
+
+            // Simple pathfinding - for now just create a straight line with path nodes
+            // In a more advanced system, this would use A* or other pathfinding algorithms
+            Vector2 startPos = GlobalPosition;
+            Vector2 direction = (targetPosition - startPos).Normalized();
+            float totalDistance = startPos.DistanceTo(targetPosition);
+
+            // Create path nodes every PathNodeDistance units
+            for (float distance = PathNodeDistance; distance < totalDistance; distance += PathNodeDistance)
+            {
+                Vector2 pathPoint = startPos + direction * distance;
+                
+                // Basic obstacle avoidance - check if path point is valid
+                if (IsValidPathPoint(pathPoint))
+                {
+                    _currentPath.Add(pathPoint);
+                }
+                else
+                {
+                    // Try to find alternate route around obstacle
+                    Vector2 altPoint = FindAlternatePathPoint(pathPoint, direction);
+                    _currentPath.Add(altPoint);
+                }
+            }
+
+            // Always add the final target
+            _currentPath.Add(targetPosition);
+        }
+
+        private bool IsValidPathPoint(Vector2 point)
+        {
+            // For now, simple check - in a real game this would check for walls, obstacles, etc.
+            // You could use raycasting or tile-based collision detection here
+            return true; // Placeholder - assume all points are valid for now
+        }
+
+        private Vector2 FindAlternatePathPoint(Vector2 blockedPoint, Vector2 direction)
+        {
+            // Simple obstacle avoidance - try perpendicular directions
+            Vector2 perpendicular = new Vector2(-direction.Y, direction.X);
+            
+            // Try offsets to the side
+            Vector2[] offsets = { 
+                perpendicular * 30, 
+                -perpendicular * 30,
+                perpendicular * 60,
+                -perpendicular * 60
+            };
+
+            foreach (Vector2 offset in offsets)
+            {
+                Vector2 testPoint = blockedPoint + offset;
+                if (IsValidPathPoint(testPoint))
+                {
+                    return testPoint;
+                }
+            }
+
+            // If no good alternative found, return original point
+            return blockedPoint;
+        }
+
+        private void ShowVisualIndicators()
+        {
+            ClearVisualIndicators();
+
+            if (_visualIndicators == null || _currentPath.Count == 0)
+            {
+                // If visual indicators not ready yet, defer the call
+                if (_visualIndicators == null)
+                {
+                    CallDeferred(nameof(ShowVisualIndicators));
+                }
+                return;
+            }
+
+            // Create visual markers for the path
+            for (int i = 0; i < _currentPath.Count; i++)
+            {
+                var marker = CreatePathMarker(_currentPath[i], i == _currentPath.Count - 1);
+                _pathMarkers.Add(marker);
+                _visualIndicators.AddChild(marker);
+            }
+
+            // Draw lines between path points
+            CreatePathLines();
+        }
+
+        private Node2D CreatePathMarker(Vector2 position, bool isTarget)
+        {
+            var marker = new Node2D();
+            marker.Position = position;
+
+            var visual = new ColorRect();
+            visual.Size = new Vector2(8, 8);
+            visual.Position = new Vector2(-4, -4); // Center the marker
+            visual.Color = isTarget ? new Color(1, 0, 0, 0.8f) : new Color(0, 1, 0, 0.6f); // Red for target, green for path nodes
+            
+            marker.AddChild(visual);
+            return marker;
+        }
+
+        private void CreatePathLines()
+        {
+            // Create a simple line renderer for the path
+            // This is a basic implementation - could be enhanced with Line2D nodes
+            if (_currentPath.Count < 2) return;
+
+            var lineRenderer = new Node2D();
+            lineRenderer.Name = "PathLines";
+            _visualIndicators.AddChild(lineRenderer);
+            _pathMarkers.Add(lineRenderer); // Add to cleanup list
+        }
+
+        private void ClearVisualIndicators()
+        {
+            if (_pathMarkers == null)
+                return;
+
+            foreach (Node2D marker in _pathMarkers)
+            {
+                if (IsInstanceValid(marker))
+                {
+                    marker.QueueFree();
+                }
+            }
+            _pathMarkers.Clear();
         }
     }
 }

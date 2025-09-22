@@ -1,108 +1,51 @@
-[gd_scene format=3 uid="uid://goblin_cave_scene"]
+[gd_scene format=3 uid="uid://g1h2i3j4k5l6m7n8"]
 
 [node name="GoblinCave" type="Node2D"]
 
-[node name="Ground" type="ColorRect" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = 200.0
-offset_right = 400.0
-offset_bottom = 250.0
-color = Color(0.2, 0.2, 0.1, 1)
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="CaveWalls" type="Node2D" parent="."]
 
-[node name="LeftWall" type="ColorRect" parent="CaveWalls"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -420.0
-offset_top = -200.0
-offset_right = -400.0
-offset_bottom = 200.0
-color = Color(0.1, 0.1, 0.05, 1)
-
-[node name="RightWall" type="ColorRect" parent="CaveWalls"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 400.0
-offset_top = -200.0
-offset_right = 420.0
-offset_bottom = 200.0
-color = Color(0.1, 0.1, 0.05, 1)
-
-[node name="Ceiling" type="ColorRect" parent="CaveWalls"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -220.0
-offset_right = 400.0
-offset_bottom = -200.0
-color = Color(0.1, 0.1, 0.05, 1)
-
-[node name="Stalagmites" type="Node2D" parent="."]
-
-[node name="Stalagmite1" type="ColorRect" parent="Stalagmites"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = 150.0
-offset_right = -130.0
-offset_bottom = 200.0
-color = Color(0.3, 0.3, 0.2, 1)
-
-[node name="Stalagmite2" type="ColorRect" parent="Stalagmites"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="Wall1" type="ColorRect" parent="CaveWalls"]
 offset_left = 100.0
-offset_top = 160.0
-offset_right = 120.0
-offset_bottom = 200.0
-color = Color(0.3, 0.3, 0.2, 1)
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 500.0
+color = Color(0.3, 0.2, 0.1, 1)
 
-[node name="Fires" type="Node2D" parent="."]
+[node name="Wall2" type="ColorRect" parent="CaveWalls"]
+offset_left = 800.0
+offset_top = 150.0
+offset_right = 900.0
+offset_bottom = 450.0
+color = Color(0.3, 0.2, 0.1, 1)
 
-[node name="Fire1" type="ColorRect" parent="Fires"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -80.0
-offset_top = 180.0
-offset_right = -60.0
-offset_bottom = 200.0
+[node name="Stalagmite1" type="ColorRect" parent="CaveWalls"]
+offset_left = 300.0
+offset_top = 400.0
+offset_right = 320.0
+offset_bottom = 450.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Stalagmite2" type="ColorRect" parent="CaveWalls"]
+offset_left = 500.0
+offset_top = 380.0
+offset_right = 520.0
+offset_bottom = 450.0
+color = Color(0.4, 0.3, 0.2, 1)
+
+[node name="Fire" type="ColorRect" parent="."]
+offset_left = 400.0
+offset_top = 300.0
+offset_right = 420.0
+offset_bottom = 320.0
 color = Color(1, 0.5, 0, 1)
 
-[node name="Fire2" type="ColorRect" parent="Fires"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 60.0
-offset_top = 175.0
-offset_right = 80.0
-offset_bottom = 200.0
-color = Color(1, 0.6, 0.1, 1)
-
-[node name="SpawnPoint" type="Marker2D" parent="."]
-position = Vector2(0, 100)
+[node name="PlayerSpawn" type="Marker2D" parent="."]
+position = Vector2(450, 250)

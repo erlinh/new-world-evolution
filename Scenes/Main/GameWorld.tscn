@@ -1,94 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://dm0e8pjhcn3mr"]
+[gd_scene load_steps=8 format=3 uid="uid://e1f2g3h4i5j6k7l8"]
 
-[ext_resource type="Script" path="res://Scripts/Core/GameManager.cs" id="1_t5qyx"]
-[ext_resource type="Script" path="res://Scripts/World/WorldSimulation.cs" id="2_m4vgr"]
-[ext_resource type="PackedScene" uid="uid://b2n6vl3p7hfnj" path="res://Scenes/Characters/Player/PlayerBase.tscn" id="3_player"]
-[ext_resource type="Script" path="res://Scripts/UI/HUDManager.cs" id="4_hud"]
+[ext_resource type="PackedScene" uid="uid://b2x3y4z5a6b7c8d9" path="res://Scenes/UI/HUD.tscn" id="1_hud"]
+[ext_resource type="PackedScene" uid="uid://a1b2c3d4e5f6g7h8" path="res://Scenes/Characters/Player/PlayerBase.tscn" id="2_player"]
+[ext_resource type="Script" path="res://Scripts/World/WorldSimulation.cs" id="3_worldsim"]
+[ext_resource type="Script" path="res://Scripts/World/SpawnManager.cs" id="4_spawn"]
+[ext_resource type="Script" path="res://Scripts/Systems/EconomySystem.cs" id="5_economy"]
+[ext_resource type="PackedScene" uid="uid://w1o2r3l4d5m6a7p8" path="res://Scenes/Environments/WorldMap.tscn" id="6_worldmap"]
+[ext_resource type="Script" path="res://Scripts/World/MapManager.cs" id="7_mapmanager"]
 
 [node name="GameWorld" type="Node2D"]
 
-[node name="GameManager" type="Node" parent="."]
-script = ExtResource("1_t5qyx")
+[node name="WorldMap" parent="." instance=ExtResource("6_worldmap")]
+script = ExtResource("7_mapmanager")
 
-[node name="WorldSimulation" type="Node" parent="GameManager"]
-script = ExtResource("2_m4vgr")
+[node name="WorldSimulation" type="Node" parent="."]
+script = ExtResource("3_worldsim")
 
-[node name="Player" parent="." instance=ExtResource("3_player")]
-position = Vector2(100, 100)
+[node name="SpawnManager" type="Node" parent="."]
+script = ExtResource("4_spawn")
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(2, 2)
+[node name="EconomySystem" type="Node" parent="."]
+script = ExtResource("5_economy")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(400, 300)
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="HUD" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = ExtResource("4_hud")
-
-[node name="StatsPanel" type="Panel" parent="UI/HUD"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = -120.0
-offset_right = 200.0
-offset_bottom = -10.0
-
-[node name="StatsLabel" type="Label" parent="UI/HUD/StatsPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "Player Stats
-Name: [Generating...]
-Race: [Loading...]
-Level: 1
-Health: 100/100
-Mana: 50/50"
-vertical_alignment = 1
-
-[node name="WorldInfoPanel" type="Panel" parent="UI/HUD"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -220.0
-offset_top = 10.0
-offset_right = -10.0
-offset_bottom = 150.0
-
-[node name="WorldInfoLabel" type="Label" parent="UI/HUD/WorldInfoPanel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "World Info
-Day: 1, Year: 1
-Population: 0
-Events: None"
-vertical_alignment = 1
-
-[node name="EventLog" type="Panel" parent="UI/HUD"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -200.0
-offset_right = -10.0
-offset_bottom = -10.0
-
-[node name="EventScrollContainer" type="ScrollContainer" parent="UI/HUD/EventLog"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="EventList" type="VBoxContainer" parent="UI/HUD/EventLog/EventScrollContainer"]
-layout_mode = 2
+[node name="HUD" parent="UI" instance=ExtResource("1_hud")]

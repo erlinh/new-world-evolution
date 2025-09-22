@@ -28,7 +28,15 @@ namespace NewWorldEvolution.Player.Evolution
             if (playerController == null) return;
 
             string race = playerController.CurrentRace;
-            var raceData = GameManager.Instance.GetRaceData(race);
+            if (string.IsNullOrEmpty(race))
+            {
+                // Try to get race from GameManager's selected race
+                race = GameManager.SelectedRace;
+            }
+
+            if (string.IsNullOrEmpty(race)) return;
+
+            var raceData = GameManager.Instance?.GetRaceData(race);
 
             if (raceData?.CanEvolve == true && raceData.EvolutionPaths != null)
             {
@@ -86,7 +94,7 @@ namespace NewWorldEvolution.Player.Evolution
             // If no parent found, add to root
             if (!EvolutionTree.Values.Any(n => n.Children.Contains(evolutionName)))
             {
-                if (EvolutionTree.ContainsKey(CurrentEvolution))
+                if (!string.IsNullOrEmpty(CurrentEvolution) && EvolutionTree.ContainsKey(CurrentEvolution))
                 {
                     EvolutionTree[CurrentEvolution].Children.Add(evolutionName);
                 }
@@ -104,7 +112,7 @@ namespace NewWorldEvolution.Player.Evolution
             AvailableEvolutions.Clear();
 
             // Check all evolutions that are children of current evolution
-            if (EvolutionTree.ContainsKey(CurrentEvolution))
+            if (!string.IsNullOrEmpty(CurrentEvolution) && EvolutionTree.ContainsKey(CurrentEvolution))
             {
                 var currentNode = EvolutionTree[CurrentEvolution];
                 

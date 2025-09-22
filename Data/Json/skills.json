@@ -202,6 +202,52 @@
     "RestrictedToRaces": ["Spider"],
     "RestrictedToProfessions": []
   },
+  "BasicCrafting": {
+    "Name": "Basic Crafting",
+    "Description": "Fundamental crafting abilities for creating simple items and tools.",
+    "Type": "Passive",
+    "Category": "Survival",
+    "MaxLevel": 8,
+    "Requirements": {},
+    "Prerequisites": [],
+    "LevelData": {
+      "1": {
+        "Level": 1,
+        "Description": "Basic item crafting",
+        "ManaCost": 0,
+        "Cooldown": 0,
+        "EffectValue": 10.0,
+        "StatBonuses": {
+          "dexterity": 1
+        }
+      },
+      "4": {
+        "Level": 4,
+        "Description": "Improved crafting efficiency",
+        "ManaCost": 0,
+        "Cooldown": 0,
+        "EffectValue": 25.0,
+        "StatBonuses": {
+          "dexterity": 2,
+          "intelligence": 1
+        }
+      },
+      "8": {
+        "Level": 8,
+        "Description": "Advanced crafting techniques",
+        "ManaCost": 0,
+        "Cooldown": 0,
+        "EffectValue": 50.0,
+        "StatBonuses": {
+          "dexterity": 4,
+          "intelligence": 2
+        }
+      }
+    },
+    "IsUnique": false,
+    "RestrictedToRaces": [],
+    "RestrictedToProfessions": []
+  },
   "PowerStrike": {
     "Name": "Power Strike",
     "Description": "A powerful melee attack that deals increased damage.",

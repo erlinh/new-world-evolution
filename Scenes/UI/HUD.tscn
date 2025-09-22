@@ -1,0 +1,73 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2x3y4z5a6b7c8d9"]
+
+[ext_resource type="Script" path="res://Scripts/UI/HUDManager.cs" id="1_abc123"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_abc123")
+
+[node name="StatsPanel" type="Panel" parent="."]
+layout_mode = 0
+anchor_right = 0.3
+anchor_bottom = 0.4
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="StatsLabel" type="Label" parent="StatsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+text = "Player Stats
+Name: Loading...
+Race: Loading...
+Level: 1"
+vertical_alignment = 1
+
+[node name="WorldInfoPanel" type="Panel" parent="."]
+layout_mode = 0
+anchor_left = 0.7
+anchor_right = 1.0
+anchor_bottom = 0.4
+
+[node name="WorldInfoLabel" type="Label" parent="WorldInfoPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+text = "World Info
+Day: 1, Year: 1
+Population: Loading..."
+vertical_alignment = 1
+
+[node name="EventLog" type="Panel" parent="."]
+layout_mode = 0
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="EventScrollContainer" type="ScrollContainer" parent="EventLog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="EventList" type="VBoxContainer" parent="EventLog/EventScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
